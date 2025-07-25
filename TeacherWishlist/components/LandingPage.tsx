@@ -232,7 +232,7 @@ export default function LandingPage() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center mb-4">
                 <GraduationCap className="text-primary text-2xl mr-2" />
-                <h3 className="text-xl font-bold">TeachersConnect Bahamas</h3>
+                <h3 className="text-xl font-bold">WishListED Bahamas</h3>
               </div>
               <p className="text-gray-300 mb-6 max-w-md">
                 Connecting Bahamian teachers with generous donors to ensure every classroom has the supplies needed for quality education.

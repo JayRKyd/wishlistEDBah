@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd TeacherWishlist && npm run build",
+  "outputDirectory": "TeacherWishlist/.next",
+  "installCommand": "cd TeacherWishlist && npm install",
+  "framework": "nextjs"
+} 

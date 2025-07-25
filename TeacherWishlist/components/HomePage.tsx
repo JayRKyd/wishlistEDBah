@@ -1,21 +1,24 @@
 'use client'
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, LogOut, Plus, Heart, BookOpen, TrendingUp, Users } from "lucide-react";
+import { GraduationCap, Plus, Heart, BookOpen, TrendingUp, Users } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
+import TeacherProfileForm from "./TeacherProfileForm";
+import Navbar from "./Navbar";
 
 export default function HomePage() {
   const { toast } = useToast();
   const router = useRouter();
   const supabase = createClient();
+  const [isProfileFormOpen, setIsProfileFormOpen] = useState(false);
 
   const { data: user, isLoading } = useQuery({
     queryKey: ["/api/auth/user"],
@@ -27,16 +30,13 @@ export default function HomePage() {
     retry: false,
   });
 
-  const { data: stats } = useQuery({
+  const { data: statsData } = useQuery({
     queryKey: ["/api/teacher/stats"],
     enabled: !!teacher,
     retry: false,
   });
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/');
-  };
+  
+  const stats = statsData as any;
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -65,42 +65,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <GraduationCap className="text-primary text-2xl mr-2" />
-              <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
-            </div>
-            
-            <nav className="hidden md:flex space-x-8">
-              <Link href="/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                Dashboard
-              </Link>
-              <Link href="/donor" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                Donor
-              </Link>
-              <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                Browse
-              </Link>
-            </nav>
-
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                Welcome, {user?.firstName || user?.email}
-              </span>
-              <Button
-                variant="outline"
-                onClick={handleLogout}
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {!teacher ? (
@@ -113,11 +78,9 @@ export default function HomePage() {
                 <p className="text-gray-600 mb-6">
                   Let's set up your profile so you can start creating wishlists for your classroom.
                 </p>
-                <Button asChild>
-                  <Link href="/dashboard">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Set Up Profile
-                  </Link>
+                <Button onClick={() => setIsProfileFormOpen(true)}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Set Up Profile
                 </Button>
               </CardContent>
             </Card>
@@ -128,10 +91,10 @@ export default function HomePage() {
             {/* Welcome Section */}
             <div className="bg-gradient-to-r from-primary to-blue-700 rounded-lg p-8 text-white">
               <h1 className="text-3xl font-bold mb-2">
-                Welcome back, {user?.firstName || 'Teacher'}!
+                Welcome back, {(user as any)?.first_name || 'Teacher'}!
               </h1>
               <p className="text-blue-100 mb-6">
-                {teacher?.grade} at {teacher?.school}, {teacher?.location}
+                {(teacher as any)?.grade} at {(teacher as any)?.school}, {(teacher as any)?.location}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -159,7 +122,7 @@ export default function HomePage() {
                     <BookOpen className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{stats.totalItems || 0}</div>
+                    <div className="text-2xl font-bold">{(stats as any)?.totalItems || 0}</div>
                     <p className="text-xs text-muted-foreground">
                       Items on your wishlists
                     </p>
@@ -172,7 +135,7 @@ export default function HomePage() {
                     <Heart className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-green-600">{stats.fulfilledItems || 0}</div>
+                    <div className="text-2xl font-bold text-green-600">{(stats as any)?.fulfilledItems || 0}</div>
                     <p className="text-xs text-muted-foreground">
                       Items completed
                     </p>
@@ -185,7 +148,7 @@ export default function HomePage() {
                     <TrendingUp className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-orange-600">{stats.neededItems || 0}</div>
+                    <div className="text-2xl font-bold text-orange-600">{((stats as any)?.totalItems || 0) - ((stats as any)?.fulfilledItems || 0)}</div>
                     <p className="text-xs text-muted-foreground">
                       Items remaining
                     </p>
@@ -265,6 +228,13 @@ export default function HomePage() {
           </div>
         )}
       </div>
+
+      {/* Teacher Profile Form Modal */}
+      <TeacherProfileForm
+        teacher={teacher as any}
+        isOpen={isProfileFormOpen}
+        onClose={() => setIsProfileFormOpen(false)}
+      />
     </div>
   );
 }

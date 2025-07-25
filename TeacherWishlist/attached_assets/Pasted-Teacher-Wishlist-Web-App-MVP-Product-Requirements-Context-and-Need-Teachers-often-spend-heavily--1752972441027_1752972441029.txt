@@ -1,0 +1,157 @@
+Teacher Wishlist Web App (MVP) – Product Requirements
+Context and Need
+Teachers often spend heavily out‐of‐pocket on classroom supplies. For example, a U.S. survey found most teachers spend about $895/year on supplies
+adoptaclassroom.org
+. In the Bahamas, with limited local resources, supporting teachers’ needs is equally important. Our app will let Bahamian teachers list items they need and help connect them with donors. Similar platforms exist elsewhere: DonorsChoose (USA) lets teachers post project requests and donors fund them
+donorschoose.org
+donorschoose.org
+, AdoptAClassroom provides fundraising pages for teacher needs, and free tools like TeacherWishLists.com allow teachers to create shareable wish lists
+teacherwishlists.com
+teacherwishlists.com
+. We will build on these ideas, focusing on an intuitive, real‐time interface for teachers and donors, but without handling any payments in-app
+teacherwishlists.com
+.
+Similar Platforms
+TeacherWishLists.com – A free, not‐for‐profit site where teachers create wish lists (with item names, quantities, descriptions) and share URLs with parents and donors
+teacherwishlists.com
+teacherwishlists.com
+. Donors can search for a teacher’s list, “view wish lists and pledge items”, then contact the teacher to arrange donation
+teacherwishlists.com
+. This site explicitly notes it “is not involved with the purchase or donation of teacher wish list items”
+teacherwishlists.com
+, illustrating our no-payment model.
+DonorsChoose.org – A well-known crowdfunding platform where U.S. public school teachers submit project requests (materials, books, technology, etc.) and donors contribute. Anyone can give “any amount” to a project
+donorschoose.org
+donorschoose.org
+. DonorsChoose manages the ordering and shipping of supplies to the classroom. While our app won’t process money, it shows that connecting donors to teacher requests is a proven model.
+AdoptAClassroom.org – A nonprofit where teachers create classroom pages and apply for funding; donors pick specific teachers or schools to support. Teachers then order needed items directly with the funds. This highlights another model of classroom funding (though it handles money, the idea of a teacher profile with needs is similar).
+TeacherLists (TeacherWishList by SchoolFamilyMedia) – A U.S. service where teachers can quickly build or upload wish lists and share them with parents. Parents can “click to pledge” items online and the list auto-updates
+teacherlists.com
+. It emphasizes mobile access (“lists are accessible anytime… on any device”
+teacherlists.com
+) and easy sharing (email, social, etc. 
+teacherlists.com
+teacherlists.com
+). This inspires features like real-time updates when someone pledges an item.
+These examples guide our MVP: allow teachers to log needs and donors to fulfill them easily, while avoiding e-commerce complexity. They demonstrate key features such as list management, sharing, and optional pledge-tracking, which we will adopt and adapt.
+User Roles and Flows
+Teacher (Wish List Owner): Must register and create an account (so they can manage their lists). Teachers enter a profile (e.g. name/title, school, grade)
+teacherwishlists.com
+ and build a wish list of needed items. Each item includes a name, quantity, description, and optionally an external purchase link. Teachers can mark items as fulfilled when donated
+teacherwishlists.com
+. The interface will allow reordering or marking priority for items (e.g. high priority for urgent needs)
+teachersparadise.com
+. Teachers then share their list via a unique URL, social media, or email – similar to TeacherWishLists which advises posting the URL on school websites for convenience
+teacherwishlists.com
+teacherwishlists.com
+.
+Donor/Parent: Can browse or search teacher wish lists without needing to log in (accounts for donors are optional). To reduce friction, we’ll allow “guest” pledges – as GoFundMe notes, users “don’t need to sign up” to donate
+support.gofundme.com
+. Donors land on a public page showing recent teacher requests (e.g. “Latest 10 teachers”) and can filter/search by school, location, or subject. They click a teacher’s profile to view the detailed wish list. For each item, donors may “Pledge” it (committing to donate that item) or click an external link to purchase it (e.g. Amazon or local supplier). The pledge action updates the list in real time (so others see the updated needed quantity)
+teacherlists.com
+. Donors can message or email the teacher via the app to coordinate drop-off. Importantly, no money changes hands on the platform – donations are arranged offline
+teacherwishlists.com
+. If a donor does create an account, they can track their pledges and receive updates (but it’s not required).
+Admin (Optional): In MVP, a small admin panel could allow monitoring or manually verifying teacher accounts (if needed for abuse prevention). But to keep MVP lean, we may skip a heavy admin interface initially.
+Core Features (MVP Scope)
+Teacher Features
+Account Creation: Teachers register with name, email, school, and grade. They verify the account (email link or admin approval). Once logged in, they access a dashboard to manage their wishlist.
+Wishlist Management: Teachers can create or update a list of needed items. Each item includes: Name, Quantity Needed, Description/Notes, and an optional Purchase Link (e.g. to Amazon)
+teacherwishlists.com
+teacherwishlists.com
+. They can mark items as fulfilled once donated (the app should cross them out or remove them)
+teacherwishlists.com
+. We will allow up to a sensible limit (e.g. 50 items) to keep lists concise
+teacherwishlists.com
+. Teachers can reorder items manually or flag a few as priority (high-need)
+teachersparadise.com
+ so donors know what’s most urgent.
+Sharing & Updates: Teachers get a shareable URL for their current wish list
+teacherwishlists.com
+. They can embed or post this on their personal or school website. The platform will offer “print” and “email” options as well
+teacherwishlists.com
+, letting teachers physically or electronically distribute a copy of their list (similar to TeacherWishLists offering a printable list
+teacherwishlists.com
+). Teachers should also receive notifications (email or in-app) when a donor pledges an item.
+Donor Features
+Public Landing & Search: The home/landing page shows an activity feed of recent teacher lists (e.g. most recent 10 additions), automatically updating in real time. This live feed draws attention to new needs (implementable via websockets or server-sent events). Donors can also search or filter lists by teacher name, school, or location (TeacherWishLists uses state/city search
+teacherwishlists.com
+; here we’d use Bahamian districts or schools).
+Viewing Lists: When a donor selects a teacher, they see the teacher’s profile (grade, school, brief note) and their wish list. The list shows each item with needed quantity and already-pledged count. Donors click a “Pledge” button beside an item to commit to donating it. On pledge, the app deducts that quantity in real time (so the list stays updated for everyone)
+teacherlists.com
+. Alternatively, an item may have a link (e.g. to Amazon) that opens a store page for purchase.
+Minimal Sign-Up: Donors are not forced to register. We follow best practice that “you don’t need to sign up” to donate
+support.gofundme.com
+. A guest donor can pledge an item by providing just a name or email. Optionally, donors can create an account to track their contributions and get updates. This lowers friction and encourages casual donors.
+Communication: After pledging, donors get contact info or messaging option to coordinate delivery with the teacher. We may include a simple chat or email link.
+Shared Features / Sitewide
+Responsive Design: The UI must be mobile-friendly and intuitive. (TeacherLists highlights that lists are always accessible on any device
+teacherlists.com
+.) All pages should work on phones/tablets.
+Real-Time Updates: Use technologies (e.g. Firebase, websockets) so that when a teacher adds a list or a donor pledges an item, all viewers see the update immediately (enhancing the live feel).
+Security & Privacy: Store minimal personal data. Do not handle any payment info. Data should be secure (HTTPS, proper authentication). Donor information can remain private (e.g. allow anonymous pledges).
+Landing Page / Dashboard
+Activity Feed: The homepage will highlight the latest teacher requests in real time (e.g. a scroll of cards or list of “Recent Wishlists”). Each entry shows teacher name/grade, school, and snippet of first items. A “See all requests” link leads to the full donors view.
+Navigation: Options for donors to browse/search or for teachers to log in/create account. Possibly a prominent “I am a Teacher / I am a Donor” button.
+Non-Functional Requirements
+No Payment Processing: The app will not include any financial transactions. This avoids regulatory/legal complexity
+teacherwishlists.com
+. All donations are arranged offline.
+Scalability: While starting small (Bahamas only), design so more users (teachers, donors) could join. Use a scalable backend (e.g. cloud hosting).
+Maintainability: The MVP should be built with common frameworks (e.g. React or Vue front end, Node/Express or Django backend, a realtime DB like Firebase/Postgres+Socket) so it can be extended later.
+Performance: Pages (especially the feed and search) should load quickly. Real-time updates should be efficient.
+Security & Compliance: Use TLS/HTTPS, sanitize inputs. Since no payments or sensitive PII (like credit cards) are stored, compliance is simpler. However, teacher/donor personal data (emails, names) must still be protected.
+Example Interfaces
+Figure: Example donor view on mobile. Each row shows an item, quantity needed, and how many have been pledged. Donors tap “Pledge” to commit. The list updates live (see “pledged” counts) so no two donors duplicate an item
+teacherlists.com
+. Figure: Example teacher list-creation interface. The teacher selects their school and enters items. We will similarly let teachers build or upload lists quickly
+teacherlists.com
+. The app then displays items where teachers set quantities and mark priorities. They can update this list any time, and the changes propagate to all donors.
+Product Requirements (PRD Summary)
+Objective: Provide a platform for Bahamian teachers to list needed classroom items and for donors to fulfill them, with minimal barriers and no on-site transactions.
+Target Users:
+Teachers: need to register to create and manage wish lists. They get an account dashboard and list-building tools
+teacherwishlists.com
+teacherwishlists.com
+.
+Donors: may browse and donate without an account (guest access)
+support.gofundme.com
+; optional registration for tracking.
+User Stories: Examples include: “As a teacher, I can log in and add items (with description, quantity) to my wish list so donors know my needs”
+teacherwishlists.com
+; “As a donor, I can find and view a teacher’s list and pledge an item without having to create an account”
+support.gofundme.com
+teacherwishlists.com
+.
+Functional Requirements:
+Account Management: Teacher sign-up/login; donor optional account.
+Wishlist Creation: Teachers add/edit items (name, qty, desc)
+teacherwishlists.com
+; reorder or mark priority
+teachersparadise.com
+. Auto-capitalize teachers’ grade/school in profile
+teacherwishlists.com
+.
+Item Fulfillment: Donors click to pledge items (app updates quantities live)
+teacherlists.com
+. Teachers can mark items as fulfilled
+teacherwishlists.com
+.
+Sharing: Provide sharable links; allow printing/emailing the list
+teacherwishlists.com
+. Teachers encouraged to post links on websites.
+Search/Filter: Donors can search by teacher name, school, or browse recent lists (TeacherWishLists has a location search by state/city
+teacherwishlists.com
+ as an inspiration).
+Notifications: Email/alert to teachers when pledges are made, and optional thank-you updates from teachers to donors.
+Non-Functional Requirements:
+Real-Time Interaction: Live updates on new lists and item pledges.
+Responsive UI: Works on mobile and desktop
+teacherlists.com
+.
+Security: Use secure protocols; require email verification for teachers.
+Limitations: Wish lists auto-hide or expire if not updated for long (TeacherWishLists hides stale lists after 24 months
+teacherwishlists.com
+). We may implement a similar clean-up to keep the site current.
+MVP Exclusions: No payment gateway, no complex matching algorithm, no curriculum content. We focus strictly on listing and connecting needs.
+Implementation Notes

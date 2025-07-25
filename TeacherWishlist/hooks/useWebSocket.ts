@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { queryClient } from '@/lib/queryClient';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface WebSocketMessage {
   type: 'activity_update' | 'pledge_update' | 'wishlist_update';
@@ -8,6 +8,7 @@ interface WebSocketMessage {
 
 export function useWebSocket() {
   const ws = useRef<WebSocket | null>(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -24,7 +25,7 @@ export function useWebSocket() {
         ws.current.onmessage = (event) => {
           try {
             const message: WebSocketMessage = JSON.parse(event.data);
-            handleWebSocketMessage(message);
+            handleWebSocketMessage(message, queryClient);
           } catch (error) {
             console.error('Failed to parse WebSocket message:', error);
           }
@@ -55,7 +56,7 @@ export function useWebSocket() {
     };
   }, []);
 
-  const handleWebSocketMessage = (message: WebSocketMessage) => {
+  const handleWebSocketMessage = (message: WebSocketMessage, queryClient: any) => {
     switch (message.type) {
       case 'activity_update':
         // Invalidate recent wishlists to show new activity

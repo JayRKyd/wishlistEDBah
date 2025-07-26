@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -17,10 +18,26 @@ export default function Navbar() {
   const router = useRouter();
   const supabase = createClient();
   const { data: userRole } = useUserRole();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/');
+    if (isLoggingOut) return; // Prevent multiple clicks
+    
+    setIsLoggingOut(true);
+    
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('Logout error:', error);
+      }
+      
+      // Force a full page reload to clear all state
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout failed:', error);
+      setIsLoggingOut(false);
+    }
   };
 
   const displayName = userRole?.profile?.first_name || userRole?.user?.email?.split('@')[0] || 'User';
@@ -86,9 +103,18 @@ export default function Navbar() {
                   {userRole.isDonor && <Heart className="inline-block ml-1 h-3 w-3 text-red-500" />}
                   {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
                 </span>
-                <Button variant="outline" onClick={handleLogout} size="sm">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut}>
+                  {isLoggingOut ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2" />
+                      Logging out...
+                    </>
+                  ) : (
+                    <>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </>
+                  )}
                 </Button>
               </>
             ) : (

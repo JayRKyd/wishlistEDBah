@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import TeacherProfileForm from "@/components/TeacherProfileForm";
 import WishlistForm from "@/components/WishlistForm";
 import Navbar from "@/components/Navbar";
+import NotificationBell from "@/components/NotificationBell";
 
 export default function TeacherDashboard() {
   const router = useRouter();
@@ -243,6 +244,7 @@ export default function TeacherDashboard() {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-3">
+                    {teacher && <NotificationBell teacherId={teacher.id} />}
                     <Button variant="outline" onClick={() => setShowProfileForm(true)}>
                       <Edit className="mr-2 h-4 w-4" />
                       Edit Profile

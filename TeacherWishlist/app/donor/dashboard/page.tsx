@@ -80,6 +80,7 @@ export default function DonorDashboard() {
             wishlists(
               id,
               title,
+              share_token,
               teachers(
                 id,
                 grade,
@@ -268,7 +269,7 @@ export default function DonorDashboard() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => router.push(`/wishlist/${item.wishlists.id}`)}
+                            onClick={() => router.push(`/wishlist/${item.wishlists.share_token}`)}
                           >
                             <Eye className="mr-2 h-4 w-4" />
                             View Wishlist

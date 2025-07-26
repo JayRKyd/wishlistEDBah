@@ -34,6 +34,7 @@ interface BankingInfoModalProps {
     amount: number;
     quantity: number;
     transaction_reference: string;
+    status?: string;
     wishlist_items: {
       name: string;
       description?: string;
@@ -66,6 +67,7 @@ export default function BankingInfoModal({
   const [showAccountNumber, setShowAccountNumber] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [isConfirming, setIsConfirming] = useState(false);
+  const [isMarkingDonated, setIsMarkingDonated] = useState(false);
 
   // Mutation to mark pledge as confirmed
   const confirmPaymentMutation = useMutation({
@@ -94,6 +96,39 @@ export default function BankingInfoModal({
       toast({
         title: "Error",
         description: "Failed to confirm payment. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation to mark pledge as completed (donated)
+  const markDonatedMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from('pledges')
+        .update({ 
+          status: 'completed',
+          completed_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', pledge.id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Donation Recorded!",
+        description: "Thank you! Your donation has been marked as completed.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['donor-pledges'] });
+      queryClient.invalidateQueries({ queryKey: ['donor-profile'] });
+      onClose();
+    },
+    onError: (error) => {
+      console.error('Mark donated error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to mark donation as completed. Please try again.",
         variant: "destructive",
       });
     },
@@ -341,6 +376,36 @@ export default function BankingInfoModal({
                     </Button>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Mark as Donated Section */}
+          {pledge.status === 'confirmed' && (
+            <Card className="bg-blue-50 border-blue-200">
+              <CardContent className="p-4">
+                <h4 className="font-medium text-blue-800 mb-3 flex items-center">
+                  <DollarSign className="mr-2 h-4 w-4" />
+                  Mark as Donated
+                </h4>
+                <p className="text-sm text-blue-700 mb-4">
+                  If you have already completed the bank transfer, you can mark this pledge as donated to update your total donated amount.
+                </p>
+                <Button
+                  onClick={() => markDonatedMutation.mutate()}
+                  disabled={markDonatedMutation.isPending}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  size="sm"
+                >
+                  {markDonatedMutation.isPending ? (
+                    "Marking as Donated..."
+                  ) : (
+                    <>
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      Mark as Donated
+                    </>
+                  )}
+                </Button>
               </CardContent>
             </Card>
           )}

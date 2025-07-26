@@ -35,10 +35,15 @@ export default function WishlistPage() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   
   // User role checking
-  const { data: userRole } = useUserRole();
+  const { data: userRole, isLoading: roleLoading } = useUserRole();
 
   // Handle pledge button clicks
   const handlePledgeClick = (item: any, teacherName: string) => {
+    // Wait for role to be loaded
+    if (roleLoading) {
+      return;
+    }
+    
     if (!userRole?.isAuthenticated) {
       // Not logged in - show auth modal
       setSelectedItem({ name: item.name, teacherName });
@@ -381,9 +386,19 @@ export default function WishlistPage() {
                           <Button 
                             className="bg-primary hover:bg-blue-700 text-white"
                             onClick={() => handlePledgeClick(item, `${user?.first_name} ${user?.last_name}`)}
+                            disabled={roleLoading}
                           >
-                            <Heart className="mr-2 h-4 w-4" />
-                            Pledge to Donate
+                            {roleLoading ? (
+                              <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                Loading...
+                              </>
+                            ) : (
+                              <>
+                                <Heart className="mr-2 h-4 w-4" />
+                                Pledge to Donate
+                              </>
+                            )}
                           </Button>
                         )}
                         

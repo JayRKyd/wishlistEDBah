@@ -37,8 +37,8 @@ export default function DonorDashboard() {
   const [showBankingModal, setShowBankingModal] = useState(false);
   const [selectedPledge, setSelectedPledge] = useState<any>(null);
 
-  // Redirect non-donors
-  if (!roleLoading && !userRole?.isDonor) {
+  // Redirect non-donors (only after role is loaded)
+  if (!roleLoading && userRole && !userRole.isDonor) {
     router.push('/browse');
     return null;
   }

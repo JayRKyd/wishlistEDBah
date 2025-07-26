@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     })
 
     if (!error) {
-      return NextResponse.redirect(new URL('/', request.url))
+      return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   }
 

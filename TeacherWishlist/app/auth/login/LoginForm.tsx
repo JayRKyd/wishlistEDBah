@@ -40,7 +40,7 @@ export default function LoginForm() {
           title: "Welcome back!",
           description: "You have successfully logged in.",
         })
-        router.push('/')
+        router.push('/dashboard')
         router.refresh()
       }
     } catch (error) {

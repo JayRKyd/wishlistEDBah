@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, LogOut, Heart, LayoutDashboard, Gift } from "lucide-react";
+import { GraduationCap, LogOut, Heart, LayoutDashboard, Gift, ChevronDown } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
   const router = useRouter();
@@ -88,12 +94,29 @@ export default function Navbar() {
             ) : (
               // Public actions - different buttons for different user types
               <div className="flex space-x-2">
-                <Button asChild>
-                  <Link href="/auth/login">
-                    <GraduationCap className="mr-2 h-4 w-4" />
-                    I'm a Teacher
-                  </Link>
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button>
+                      <GraduationCap className="mr-2 h-4 w-4" />
+                      I'm a Teacher
+                      <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href="/auth/login" className="flex items-center">
+                        <GraduationCap className="mr-2 h-4 w-4" />
+                        Sign In
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/auth/signup" className="flex items-center">
+                        <GraduationCap className="mr-2 h-4 w-4" />
+                        Sign Up
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <Button variant="outline" asChild>
                   <Link href="/auth/donor-login">
                     <Heart className="mr-2 h-4 w-4" />

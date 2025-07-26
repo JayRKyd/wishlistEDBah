@@ -103,7 +103,7 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Button 
                 size="lg"
-                onClick={() => window.location.href = '/auth/login'}
+                onClick={() => window.location.href = '/auth/signup'}
                 className="bg-primary text-white hover:bg-blue-700 transform hover:scale-105 shadow-lg"
               >
                 <Plus className="mr-2 h-5 w-5" />

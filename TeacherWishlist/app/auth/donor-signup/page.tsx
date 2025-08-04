@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import type { InsertUser, InsertDonor } from "@/lib/supabase/schema";
+import type { InsertDonor } from "@/lib/supabase/schema";
 
 export default function DonorSignUpPage() {
   const router = useRouter();
@@ -59,7 +59,7 @@ export default function DonorSignUpPage() {
     setIsLoading(true);
 
     try {
-      // Create auth user
+      // Create auth user - the trigger will automatically create the user record with role='donor'
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -75,28 +75,6 @@ export default function DonorSignUpPage() {
       if (authError) throw authError;
 
       if (authData.user) {
-        console.log('Auth user created:', authData.user.id);
-        
-        // User profile is automatically created by trigger
-        // Just verify it was created with the correct role
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .select('role')
-          .eq('id', authData.user.id)
-          .single();
-
-        console.log('User data check:', { userData, userError });
-
-        if (userError) {
-          console.error('User data error:', userError);
-          throw new Error(`User profile error: ${userError.message}`);
-        }
-
-        if (userData?.role !== 'donor') {
-          console.error('User role mismatch:', userData?.role);
-          throw new Error(`User role is ${userData?.role}, expected donor`);
-        }
-
         // Create donor profile
         const donorData: InsertDonor = {
           user_id: authData.user.id,
@@ -105,14 +83,9 @@ export default function DonorSignUpPage() {
           motivation: formData.motivation || null,
         };
 
-        console.log('Creating donor profile with data:', donorData);
-
-        const { data: donorResult, error: donorError } = await supabase
+        const { error: donorError } = await supabase
           .from('donors')
-          .insert([donorData])
-          .select();
-
-        console.log('Donor creation result:', { donorResult, donorError });
+          .insert([donorData]);
 
         if (donorError) {
           console.error('Donor creation error:', donorError);

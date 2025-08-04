@@ -11,7 +11,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import type { InsertDonor } from "@/lib/supabase/schema";
 
 export default function DonorSignUpPage() {
   const router = useRouter();
@@ -60,6 +59,7 @@ export default function DonorSignUpPage() {
 
     try {
       // Create auth user - the trigger will automatically create the user record with role='donor'
+      // and another trigger will automatically create the donor profile
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -68,6 +68,10 @@ export default function DonorSignUpPage() {
             first_name: formData.firstName,
             last_name: formData.lastName,
             role: 'donor',
+            // Store additional donor info in metadata for later use
+            phone: formData.phone || null,
+            location: formData.location || null,
+            motivation: formData.motivation || null,
           }
         }
       });
@@ -75,23 +79,6 @@ export default function DonorSignUpPage() {
       if (authError) throw authError;
 
       if (authData.user) {
-        // Create donor profile
-        const donorData: InsertDonor = {
-          user_id: authData.user.id,
-          phone: formData.phone || null,
-          location: formData.location || null,
-          motivation: formData.motivation || null,
-        };
-
-        const { error: donorError } = await supabase
-          .from('donors')
-          .insert([donorData]);
-
-        if (donorError) {
-          console.error('Donor creation error:', donorError);
-          throw new Error(`Donor profile creation failed: ${donorError.message}`);
-        }
-
         toast({
           title: "Account Created!",
           description: "Welcome to the community! Check your email to verify your account.",

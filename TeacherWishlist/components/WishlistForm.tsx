@@ -27,7 +27,6 @@ interface WishlistItem {
   quantity: number;
   priority: string;
   estimated_cost: string;
-  purchase_link: string;
 }
 
 export default function WishlistForm({ teacherId, onClose, isOpen, existingWishlistId, existingWishlistTitle }: WishlistFormProps) {
@@ -40,7 +39,6 @@ export default function WishlistForm({ teacherId, onClose, isOpen, existingWishl
       quantity: 1,
       priority: "standard",
       estimated_cost: "",
-      purchase_link: "",
     }
   ]);
 
@@ -113,8 +111,7 @@ export default function WishlistForm({ teacherId, onClose, isOpen, existingWishl
           description: item.description || null,
           quantity: item.quantity,
           priority: item.priority,
-          estimated_cost: item.estimated_cost || null,
-          purchase_link: item.purchase_link || null,
+          estimated_cost: item.estimated_cost,
           sort_order: startingSortOrder + index,
         }));
 
@@ -159,12 +156,26 @@ export default function WishlistForm({ teacherId, onClose, isOpen, existingWishl
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const validItems = items.filter(item => item.name.trim());
+    const validItems = items.filter(item => item.name.trim() && item.estimated_cost.trim());
     
     if (validItems.length === 0) {
       toast({
-        title: "No Items",
-        description: "Please add at least one item to your wishlist.",
+        title: "Missing Required Fields",
+        description: "Please add at least one item with both name and estimated cost.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check for items with missing required fields
+    const itemsWithMissingFields = items.filter(item => 
+      item.name.trim() && !item.estimated_cost.trim()
+    );
+    
+    if (itemsWithMissingFields.length > 0) {
+      toast({
+        title: "Missing Estimated Costs",
+        description: "Please provide estimated costs for all items.",
         variant: "destructive",
       });
       return;
@@ -208,7 +219,6 @@ export default function WishlistForm({ teacherId, onClose, isOpen, existingWishl
       quantity: 1,
       priority: "standard",
       estimated_cost: "",
-      purchase_link: "",
     }]);
   };
 
@@ -220,7 +230,6 @@ export default function WishlistForm({ teacherId, onClose, isOpen, existingWishl
       quantity: 1,
       priority: "standard",
       estimated_cost: "",
-      purchase_link: "",
     }]);
   };
 
@@ -351,26 +360,18 @@ export default function WishlistForm({ teacherId, onClose, isOpen, existingWishl
                       </div>
 
                       <div>
-                        <Label htmlFor={`estimated_cost-${index}`}>Estimated Cost (Optional)</Label>
+                        <Label htmlFor={`estimated_cost-${index}`}>Estimated Cost *</Label>
                         <Input
                           id={`estimated_cost-${index}`}
                           type="text"
                           value={item.estimated_cost}
                           onChange={(e) => handleItemChange(index, "estimated_cost", e.target.value)}
                           placeholder="e.g., $15"
+                          required
                         />
                       </div>
 
-                      <div>
-                        <Label htmlFor={`purchase_link-${index}`}>Purchase Link (Optional)</Label>
-                        <Input
-                          id={`purchase_link-${index}`}
-                          type="url"
-                          value={item.purchase_link}
-                          onChange={(e) => handleItemChange(index, "purchase_link", e.target.value)}
-                          placeholder="e.g., Amazon product link"
-                        />
-                      </div>
+
                     </div>
                   </CardContent>
                 </Card>

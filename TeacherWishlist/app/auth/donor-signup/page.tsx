@@ -113,7 +113,7 @@ export default function DonorSignUpPage() {
           localStorage.removeItem('pledge_intent');
           router.push(intent.returnUrl || '/browse');
         } else {
-          router.push('/donor/dashboard');
+          router.push('/auth/donor-login');
         }
       }
     } catch (error: any) {

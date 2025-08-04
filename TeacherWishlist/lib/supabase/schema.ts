@@ -49,7 +49,7 @@ export interface WishlistItem {
   description: string | null
   priority: string
   quantity: number
-  estimated_cost: string | null
+  estimated_cost: string
   purchase_link: string | null
   is_fulfilled: boolean
   sort_order: number
@@ -167,7 +167,7 @@ export interface InsertWishlistItem {
   description?: string | null
   priority: string
   quantity: number
-  estimated_cost?: string | null
+  estimated_cost: string
   purchase_link?: string | null
   sort_order: number
 }

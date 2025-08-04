@@ -45,7 +45,8 @@ export default function Navbar() {
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
-        <div className="flex justify-between items-center h-16 gap-1 sm:gap-2">
+        {/* Desktop Layout */}
+        <div className="hidden md:flex justify-between items-center h-16 gap-1 sm:gap-2">
                      {/* Logo */}
            {userRole?.isAuthenticated ? (
              // Non-clickable logo for authenticated users
@@ -231,6 +232,124 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+        </div>
+
+        {/* Mobile Layout */}
+        <div className="md:hidden">
+          {/* Mobile Header Row */}
+          <div className="flex justify-between items-center h-16 gap-2">
+            {/* Logo */}
+            {userRole?.isAuthenticated ? (
+              // Non-clickable logo for authenticated users
+              <div className="flex items-center min-w-0 flex-shrink-0">
+                <GraduationCap className="text-primary text-lg mr-1 flex-shrink-0" />
+                <h1 className="text-sm font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+              </div>
+            ) : (
+              // Clickable logo for public users
+              <Link href="/" className="flex items-center hover:opacity-80 transition-opacity min-w-0 flex-shrink-0">
+                <GraduationCap className="text-primary text-lg mr-1 flex-shrink-0" />
+                <h1 className="text-sm font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+              </Link>
+            )}
+
+            {/* Mobile Actions */}
+            <div className="flex items-center gap-2">
+              {userRole?.isAuthenticated ? (
+                // Authenticated user mobile actions
+                <>
+                  <span className="text-xs text-gray-600">
+                    {displayName}
+                    {userRole.isDonor && <Heart className="inline-block ml-1 h-3 w-3 text-red-500" />}
+                    {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
+                    {userRole.isAdmin && <GraduationCap className="inline-block ml-1 h-3 w-3 text-purple-500" />}
+                  </span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Menu className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      {userRole.isTeacher && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link href="/dashboard" className="flex items-center">
+                              <LayoutDashboard className="mr-2 h-4 w-4 text-primary" />
+                              Dashboard
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href="/browse" className="flex items-center">
+                              <Gift className="mr-2 h-4 w-4 text-primary" />
+                              Browse Wishlists
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                      {userRole.isDonor && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link href="/donor/dashboard" className="flex items-center">
+                              <Heart className="mr-2 h-4 w-4 text-red-500" />
+                              My Donations
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href="/browse" className="flex items-center">
+                              <Gift className="mr-2 h-4 w-4 text-primary" />
+                              Browse Wishlists
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                      {userRole.isAdmin && (
+                        <DropdownMenuItem asChild>
+                          <Link href="/admin/verification" className="flex items-center">
+                            <GraduationCap className="mr-2 h-4 w-4 text-purple-500" />
+                            Admin Panel
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem 
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="text-red-600 focus:text-red-600"
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        {isLoggingOut ? "Logging out..." : "Logout"}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+                             ) : (
+                 // Public user mobile actions - hamburger menu
+                 <DropdownMenu>
+                   <DropdownMenuTrigger asChild>
+                     <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                       <Menu className="h-4 w-4" />
+                     </Button>
+                   </DropdownMenuTrigger>
+                                       <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem asChild>
+                        <Link href="/auth/login" className="flex items-center">
+                          <GraduationCap className="mr-2 h-4 w-4" />
+                          I'm a Teacher
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/auth/donor-login" className="flex items-center">
+                          <Heart className="mr-2 h-4 w-4" />
+                          I Want to Help
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                 </DropdownMenu>
+               )}
+            </div>
+          </div>
+
+          
         </div>
       </div>
     </header>

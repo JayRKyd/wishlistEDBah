@@ -75,6 +75,8 @@ export default function DonorSignUpPage() {
       if (authError) throw authError;
 
       if (authData.user) {
+        console.log('Auth user created:', authData.user.id);
+        
         // User profile is automatically created by trigger
         // Just verify it was created with the correct role
         const { data: userData, error: userError } = await supabase
@@ -83,8 +85,16 @@ export default function DonorSignUpPage() {
           .eq('id', authData.user.id)
           .single();
 
-        if (userError || userData?.role !== 'donor') {
-          throw new Error('Failed to create donor profile. Please try again.');
+        console.log('User data check:', { userData, userError });
+
+        if (userError) {
+          console.error('User data error:', userError);
+          throw new Error(`User profile error: ${userError.message}`);
+        }
+
+        if (userData?.role !== 'donor') {
+          console.error('User role mismatch:', userData?.role);
+          throw new Error(`User role is ${userData?.role}, expected donor`);
         }
 
         // Create donor profile
@@ -95,11 +105,19 @@ export default function DonorSignUpPage() {
           motivation: formData.motivation || null,
         };
 
-        const { error: donorError } = await supabase
-          .from('donors')
-          .insert([donorData]);
+        console.log('Creating donor profile with data:', donorData);
 
-        if (donorError) throw donorError;
+        const { data: donorResult, error: donorError } = await supabase
+          .from('donors')
+          .insert([donorData])
+          .select();
+
+        console.log('Donor creation result:', { donorResult, donorError });
+
+        if (donorError) {
+          console.error('Donor creation error:', donorError);
+          throw new Error(`Donor profile creation failed: ${donorError.message}`);
+        }
 
         toast({
           title: "Account Created!",
@@ -166,7 +184,10 @@ export default function DonorSignUpPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Last Name *</Label>
+                  <Label htmlFor="lastName" className="flex items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    Last Name *
+                  </Label>
                   <Input
                     id="lastName"
                     type="text"

@@ -78,21 +78,18 @@ export default function Navbar() {
                      </Link>
                    </>
                  )}
-                 {userRole.isDonor && (
-                   <>
-                     <Link href="/donor/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                       <Heart className="inline-block mr-1 h-4 w-4" />
-                       My Donations
-                     </Link>
-                     <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                       <Gift className="inline-block mr-1 h-4 w-4" />
-                       Browse Wishlists
-                     </Link>
-                     <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                       Home
-                     </Link>
-                   </>
-                 )}
+                                   {userRole.isDonor && (
+                    <>
+                      <Link href="/donor/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                        <Heart className="inline-block mr-1 h-4 w-4" />
+                        My Donations
+                      </Link>
+                      <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                        <Gift className="inline-block mr-1 h-4 w-4" />
+                        Browse Wishlists
+                      </Link>
+                    </>
+                  )}
                  {/* Admin users get no navigation links - they only manage verification */}
                </>
              ) : (
@@ -197,28 +194,22 @@ export default function Navbar() {
                     </DropdownMenuItem>
                   </>
                 )}
-                {userRole.isDonor && (
-                  <>
-                    <DropdownMenuItem asChild>
-                      <Link href="/donor/dashboard" className="flex items-center">
-                        <Heart className="mr-2 h-4 w-4 text-red-500" />
-                        My Donations
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/browse" className="flex items-center">
-                        <Gift className="mr-2 h-4 w-4 text-primary" />
-                        Browse Wishlists
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/" className="flex items-center">
-                        <GraduationCap className="mr-2 h-4 w-4 text-primary" />
-                        Home
-                      </Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
+                                 {userRole.isDonor && (
+                   <>
+                     <DropdownMenuItem asChild>
+                       <Link href="/donor/dashboard" className="flex items-center">
+                         <Heart className="mr-2 h-4 w-4 text-red-500" />
+                         My Donations
+                       </Link>
+                     </DropdownMenuItem>
+                     <DropdownMenuItem asChild>
+                       <Link href="/browse" className="flex items-center">
+                         <Gift className="mr-2 h-4 w-4 text-primary" />
+                         Browse Wishlists
+                       </Link>
+                     </DropdownMenuItem>
+                   </>
+                 )}
                 {userRole.isAdmin && (
                   <DropdownMenuItem asChild>
                     <Link href="/admin/verification" className="flex items-center">

@@ -16,10 +16,15 @@ function HomePageContent() {
       
       if (code) {
         try {
-          // Exchange the code for a session
-          const { error } = await supabase.auth.exchangeCodeForSession(code)
+          // For email verification, we need to verify the OTP directly
+          const { data, error } = await supabase.auth.verifyOtp({
+            token_hash: code,
+            type: 'signup'
+          })
           
-          if (!error) {
+          if (!error && data.user) {
+            console.log('Email verification successful')
+            
             // Small delay to ensure database is updated
             await new Promise(resolve => setTimeout(resolve, 1000))
             

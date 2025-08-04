@@ -326,14 +326,14 @@ export default function TeacherDashboard() {
             {Array.isArray(wishlists) && wishlists.map((wishlist: any) => (
               <Card key={wishlist.id}>
                 <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <CardTitle>{wishlist.title || "My Classroom Wishlist"}</CardTitle>
-                    <div className="flex items-center space-x-4">
-                      <Button variant="outline" size="sm">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                    <CardTitle className="text-lg sm:text-xl">{wishlist.title || "My Classroom Wishlist"}</CardTitle>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
                         <Share className="mr-2 h-4 w-4" />
                         Share
                       </Button>
-                      <span className="text-sm text-gray-500">Share Code: {wishlist.share_token}</span>
+                      <span className="text-xs sm:text-sm text-gray-500 break-all">Share Code: {wishlist.share_token}</span>
                     </div>
                   </div>
                 </CardHeader>
@@ -457,28 +457,28 @@ function WishlistItems({
       {items.map((item: any) => (
         <div
           key={item.id}
-          className={`p-4 border rounded-lg transition-all ${
+          className={`p-3 sm:p-4 border rounded-lg transition-all ${
             item.is_fulfilled 
               ? 'bg-gray-50 border-gray-200 opacity-75' 
               : 'bg-white border-gray-200'
           }`}
         >
-          <div className="flex items-center gap-4">
-            <div className="flex items-center">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <input 
                 type="checkbox" 
                 checked={item.is_fulfilled}
                 readOnly
                 className="rounded border-gray-300 text-green-600 focus:ring-green-500" 
               />
-              <div className="ml-3 w-8 h-8 bg-gray-200 rounded flex items-center justify-center text-gray-500 cursor-grab">
-                <GripVertical className="h-4 w-4" />
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 rounded flex items-center justify-center text-gray-500 cursor-grab">
+                <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
               </div>
             </div>
             
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h3 className={`font-semibold ${
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                <h3 className={`font-semibold text-sm sm:text-base break-words ${
                   item.is_fulfilled 
                     ? 'text-gray-500 line-through' 
                     : 'text-gray-900'
@@ -503,7 +503,7 @@ function WishlistItems({
               </div>
               
               {item.description && (
-                <p className={`text-sm mb-3 ${
+                <p className={`text-xs sm:text-sm mb-2 sm:mb-3 break-words ${
                   item.is_fulfilled 
                     ? 'text-gray-400 line-through' 
                     : 'text-gray-600'
@@ -512,7 +512,7 @@ function WishlistItems({
                 </p>
               )}
               
-              <div className={`flex items-center gap-4 text-sm ${
+              <div className={`flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm ${
                 item.is_fulfilled ? 'text-gray-400' : 'text-gray-500'
               }`}>
                 <span>Need: <strong>{item.quantity}</strong></span>
@@ -522,7 +522,7 @@ function WishlistItems({
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -535,7 +535,7 @@ function WishlistItems({
                 }`}
                 title={item.is_fulfilled ? 'Mark as not fulfilled' : 'Mark as fulfilled'}
               >
-                <Check className={`h-4 w-4 ${item.is_fulfilled ? 'font-bold' : ''}`} />
+                <Check className={`h-3 w-3 sm:h-4 sm:w-4 ${item.is_fulfilled ? 'font-bold' : ''}`} />
               </Button>
               <Button
                 variant="ghost"
@@ -549,7 +549,7 @@ function WishlistItems({
                 } hover:bg-red-50`}
                 title="Delete item"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </div>
           </div>

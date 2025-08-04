@@ -46,11 +46,20 @@ export default function Navbar() {
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <GraduationCap className="text-primary text-2xl mr-2" />
-            <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
-          </Link>
+                     {/* Logo */}
+           {userRole?.isAuthenticated ? (
+             // Non-clickable logo for authenticated users
+             <div className="flex items-center">
+               <GraduationCap className="text-primary text-2xl mr-2" />
+               <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
+             </div>
+           ) : (
+             // Clickable logo for public users
+             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+               <GraduationCap className="text-primary text-2xl mr-2" />
+               <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
+             </Link>
+           )}
           
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex space-x-8">
@@ -113,7 +122,7 @@ export default function Navbar() {
                    {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
                    {userRole.isAdmin && <GraduationCap className="inline-block ml-1 h-3 w-3 text-purple-500" />}
                  </span>
-                 <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut} className="hidden sm:flex">
+                 <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut} className="hidden sm:inline-flex">
                    {isLoggingOut ? (
                      <>
                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2" />

@@ -205,22 +205,22 @@ Best regards,
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           <div className="animate-pulse">
             {/* Header */}
-            <div className="flex items-center mb-8">
-              <div className="w-32 h-6 bg-gray-200 rounded"></div>
+            <div className="flex items-center mb-4 sm:mb-8">
+              <div className="w-24 sm:w-32 h-4 sm:h-6 bg-gray-200 rounded"></div>
             </div>
             
             {/* Profile Card */}
-            <Card className="mb-8">
-              <CardContent className="p-8">
-                <div className="flex items-start space-x-6">
-                  <div className="w-24 h-24 bg-gray-200 rounded-full"></div>
+            <Card className="mb-4 sm:mb-8">
+              <CardContent className="p-4 sm:p-8">
+                <div className="flex items-start space-x-3 sm:space-x-6">
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-200 rounded-full"></div>
                   <div className="flex-1">
-                    <div className="w-48 h-8 bg-gray-200 rounded mb-2"></div>
-                    <div className="w-64 h-4 bg-gray-200 rounded mb-4"></div>
-                    <div className="w-32 h-4 bg-gray-200 rounded"></div>
+                    <div className="w-32 sm:w-48 h-6 sm:h-8 bg-gray-200 rounded mb-2"></div>
+                    <div className="w-48 sm:w-64 h-3 sm:h-4 bg-gray-200 rounded mb-3 sm:mb-4"></div>
+                    <div className="w-24 sm:w-32 h-3 sm:h-4 bg-gray-200 rounded"></div>
                   </div>
                 </div>
               </CardContent>
@@ -236,14 +236,14 @@ Best regards,
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         
-        <div className="flex items-center justify-center flex-1 py-16">
+        <div className="flex items-center justify-center flex-1 py-8 sm:py-16 px-4">
           <div className="text-center">
-            <div className="text-6xl mb-4">📚</div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Wishlist Not Found</h2>
-            <p className="text-gray-600 mb-6">
+            <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📚</div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Wishlist Not Found</h2>
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-4">
               This wishlist may have been removed or the link is incorrect.
             </p>
-            <Button asChild>
+            <Button asChild size="sm" className="sm:size-default">
               <Link href="/browse">
                 Browse Other Wishlists
               </Link>
@@ -462,17 +462,17 @@ Best regards,
                   </CardContent>
                 </Card>
               ))
-            ) : (
-              <Card className="border border-gray-200 shadow-sm">
-                <CardContent className="text-center py-12">
-                  <div className="text-6xl mb-4">📝</div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No Items Yet</h3>
-                  <p className="text-gray-600">
-                    This teacher hasn't added any items to their wishlist yet.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+                         ) : (
+               <Card className="border border-gray-200 shadow-sm">
+                 <CardContent className="text-center py-8 sm:py-12 px-4">
+                   <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📝</div>
+                   <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">No Items Yet</h3>
+                   <p className="text-sm sm:text-base text-gray-600">
+                     This teacher hasn't added any items to their wishlist yet.
+                   </p>
+                 </CardContent>
+               </Card>
+             )}
           </div>
         </div>
       </div>

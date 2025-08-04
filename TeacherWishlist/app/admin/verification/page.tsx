@@ -83,6 +83,8 @@ export default function AdminVerificationPage() {
   const { data: pendingTeachers, isLoading: teachersLoading } = useQuery({
     queryKey: ['pending-teachers'],
     queryFn: async () => {
+      console.log('Fetching pending teachers...');
+      
       const { data, error } = await supabase
         .from('teachers')
         .select(`
@@ -97,6 +99,8 @@ export default function AdminVerificationPage() {
         .eq('is_verified', true)
         .order('created_at', { ascending: false });
       
+      console.log('Pending teachers result:', { data, error });
+      
       if (error) throw error;
       return data as PendingTeacher[];
     },
@@ -105,15 +109,22 @@ export default function AdminVerificationPage() {
   // Approve teacher mutation
   const approveMutation = useMutation({
     mutationFn: async ({ teacherId, comment }: { teacherId: number; comment: string }) => {
-      const { error } = await supabase
+      console.log('Approving teacher with ID:', teacherId, 'and comment:', comment);
+      
+      const { data, error } = await supabase
         .from('teachers')
         .update({ 
           is_teacher_verified: true,
           verification_comment: comment || null
         })
-        .eq('id', teacherId);
+        .eq('id', teacherId)
+        .select();
+      
+      console.log('Update result:', { data, error });
       
       if (error) throw error;
+      
+      return data;
     },
     onSuccess: () => {
       toast({

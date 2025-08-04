@@ -208,10 +208,10 @@ export default function TeacherDashboard() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {(!teacher || teacherLoading) ? (
           /* Teacher Profile Setup */
-          <div className="text-center py-12">
+          <div className="text-center py-8 sm:py-12">
             <Card className="max-w-2xl mx-auto">
               <CardHeader>
                 <CardTitle className="flex items-center justify-center">
@@ -231,30 +231,31 @@ export default function TeacherDashboard() {
           </div>
         ) : (
           /* Dashboard */
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Dashboard Header */}
             <Card>
-              <CardContent className="p-6">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
                   <div>
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                       Welcome back, {userProfile?.first_name || "Teacher"}!
                     </h1>
-                    <p className="text-gray-600">Manage your classroom wishlist and track donations</p>
-                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                    <p className="text-gray-600 text-sm sm:text-base">Manage your classroom wishlist and track donations</p>
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 text-xs sm:text-sm text-gray-500">
                       <span>{teacher?.grade}</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span>{teacher?.school}</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span>{teacher?.location}</span>
                     </div>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     {teacher && <NotificationBell teacherId={teacher.id} />}
-                    <Button variant="outline" onClick={() => setShowProfileForm(true)}>
+                    <Button variant="outline" onClick={() => setShowProfileForm(true)} size="sm" className="sm:size-default">
                       <Edit className="mr-2 h-4 w-4" />
-                      Edit Profile
+                      <span className="hidden sm:inline">Edit Profile</span>
+                      <span className="sm:hidden">Edit</span>
                     </Button>
                     <Button onClick={() => {
                       // If user has exactly one wishlist, add to it; otherwise create new
@@ -266,53 +267,54 @@ export default function TeacherDashboard() {
                         setSelectedWishlistTitle(undefined);
                       }
                       setShowWishlistForm(true);
-                    }}>
+                    }} size="sm" className="sm:size-default">
                       <Plus className="mr-2 h-4 w-4" />
-                      Add New Item
+                      <span className="hidden sm:inline">Add New Item</span>
+                      <span className="sm:hidden">Add Item</span>
                     </Button>
                   </div>
                 </div>
                 
                 {/* Quick Stats */}
                 {stats && (
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-                    <div className="bg-blue-50 rounded-lg p-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-4 sm:mt-6">
+                    <div className="bg-blue-50 rounded-lg p-3 sm:p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-blue-600 font-medium">Total Items</p>
-                          <p className="text-2xl font-bold text-blue-900">{stats?.totalItems || 0}</p>
+                          <p className="text-xs sm:text-sm text-blue-600 font-medium">Total Items</p>
+                          <p className="text-lg sm:text-2xl font-bold text-blue-900">{stats?.totalItems || 0}</p>
                         </div>
-                        <div className="text-blue-500 text-xl">📋</div>
+                        <div className="text-blue-500 text-lg sm:text-xl">📋</div>
                       </div>
                     </div>
                     
-                    <div className="bg-green-50 rounded-lg p-4">
+                    <div className="bg-green-50 rounded-lg p-3 sm:p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-green-600 font-medium">Fulfilled</p>
-                          <p className="text-2xl font-bold text-green-900">{stats?.fulfilledItems || 0}</p>
+                          <p className="text-xs sm:text-sm text-green-600 font-medium">Fulfilled</p>
+                          <p className="text-lg sm:text-2xl font-bold text-green-900">{stats?.fulfilledItems || 0}</p>
                         </div>
-                        <Check className="text-green-500 h-5 w-5" />
+                        <Check className="text-green-500 h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
                     </div>
                     
-                    <div className="bg-orange-50 rounded-lg p-4">
+                    <div className="bg-orange-50 rounded-lg p-3 sm:p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-orange-600 font-medium">Pledged</p>
-                          <p className="text-2xl font-bold text-orange-900">{stats?.pledgedItems || 0}</p>
+                          <p className="text-xs sm:text-sm text-orange-600 font-medium">Pledged</p>
+                          <p className="text-lg sm:text-2xl font-bold text-orange-900">{stats?.pledgedItems || 0}</p>
                         </div>
-                        <div className="text-orange-500 text-xl">❤️</div>
+                        <div className="text-orange-500 text-lg sm:text-xl">❤️</div>
                       </div>
                     </div>
                     
-                    <div className="bg-purple-50 rounded-lg p-4">
+                    <div className="bg-purple-50 rounded-lg p-3 sm:p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-purple-600 font-medium">Still Needed</p>
-                          <p className="text-2xl font-bold text-purple-900">{stats?.neededItems || 0}</p>
+                          <p className="text-xs sm:text-sm text-purple-600 font-medium">Still Needed</p>
+                          <p className="text-lg sm:text-2xl font-bold text-purple-900">{stats?.neededItems || 0}</p>
                         </div>
-                        <div className="text-purple-500 text-xl">⏳</div>
+                        <div className="text-purple-500 text-lg sm:text-xl">⏳</div>
                       </div>
                     </div>
                   </div>

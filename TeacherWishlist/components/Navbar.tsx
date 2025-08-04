@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, LogOut, Heart, LayoutDashboard, Gift, ChevronDown } from "lucide-react";
+import { GraduationCap, LogOut, Heart, LayoutDashboard, Gift, ChevronDown, Menu, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import {
@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export default function Navbar() {
   const router = useRouter();
@@ -52,8 +53,8 @@ export default function Navbar() {
             <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
           </Link>
           
-                     {/* Navigation Links */}
-           <nav className="hidden md:flex space-x-8">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex space-x-8">
              {userRole?.isAuthenticated ? (
                // Authenticated user navigation
                <>
@@ -162,6 +163,103 @@ export default function Navbar() {
               </div>
             )}
           </div>
+
+          {/* Mobile Menu */}
+          {userRole?.isAuthenticated && (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="md:hidden">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-lg font-semibold">Menu</h2>
+                    <span className="text-sm text-gray-600">
+                      Welcome, {displayName}
+                    </span>
+                  </div>
+                  
+                  <nav className="flex-1 space-y-4">
+                    {userRole.isTeacher && (
+                      <>
+                        <Link 
+                          href="/dashboard" 
+                          className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <LayoutDashboard className="mr-3 h-5 w-5 text-primary" />
+                          <span>Dashboard</span>
+                        </Link>
+                        <Link 
+                          href="/browse" 
+                          className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <Gift className="mr-3 h-5 w-5 text-primary" />
+                          <span>Browse Wishlists</span>
+                        </Link>
+                      </>
+                    )}
+                    {userRole.isDonor && (
+                      <>
+                        <Link 
+                          href="/donor/dashboard" 
+                          className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <Heart className="mr-3 h-5 w-5 text-red-500" />
+                          <span>My Donations</span>
+                        </Link>
+                        <Link 
+                          href="/browse" 
+                          className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <Gift className="mr-3 h-5 w-5 text-primary" />
+                          <span>Browse Wishlists</span>
+                        </Link>
+                        <Link 
+                          href="/" 
+                          className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <GraduationCap className="mr-3 h-5 w-5 text-primary" />
+                          <span>Home</span>
+                        </Link>
+                      </>
+                    )}
+                    {userRole.isAdmin && (
+                      <Link 
+                        href="/admin/verification" 
+                        className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                      >
+                        <GraduationCap className="mr-3 h-5 w-5 text-purple-500" />
+                        <span>Admin Panel</span>
+                      </Link>
+                    )}
+                  </nav>
+                  
+                  <div className="border-t pt-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={handleLogout} 
+                      className="w-full" 
+                      disabled={isLoggingOut}
+                    >
+                      {isLoggingOut ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2" />
+                          Logging out...
+                        </>
+                      ) : (
+                        <>
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Logout
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </header>

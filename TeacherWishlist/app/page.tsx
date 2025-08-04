@@ -42,7 +42,11 @@ function HomePageContent() {
                   return
                 }
 
+                console.log('User profile:', userProfile)
+                console.log('User role:', userProfile?.role)
+                
                 if (userProfile?.role === 'donor') {
+                  console.log('Redirecting donor to /donor/dashboard')
                   router.push('/donor/dashboard')
                   return
                 } else if (userProfile?.role === 'teacher') {

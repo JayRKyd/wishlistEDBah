@@ -3,10 +3,16 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap, Heart, Search, Plus, Users, CheckCircle, Clock } from "lucide-react";
+import { GraduationCap, Heart, Search, Plus, Users, CheckCircle, Clock, Menu } from "lucide-react";
 import ActivityFeed from "@/components/ActivityFeed";
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function LandingPage() {
   const supabase = createClient();
@@ -74,20 +80,28 @@ export default function LandingPage() {
             </nav>
 
             <div className="flex items-center space-x-4">
-              <Button 
-                onClick={() => window.location.href = '/auth/login'}
-                className="bg-primary text-white hover:bg-blue-700"
-              >
-                <GraduationCap className="mr-2 h-4 w-4" />
-                I'm a Teacher
-              </Button>
-                             <Button 
-                 variant="outline"
-                 onClick={() => window.location.href = '/auth/donor-signup'}
-               >
-                 <Heart className="mr-2 h-4 w-4" />
-                 I Want to Help
-               </Button>
+              {/* Desktop - Hamburger Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <Menu className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/login" className="flex items-center">
+                      <GraduationCap className="mr-2 h-4 w-4" />
+                      I'm a Teacher
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/donor-login" className="flex items-center">
+                      <Heart className="mr-2 h-4 w-4" />
+                      I Want to Help
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>

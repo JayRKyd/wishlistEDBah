@@ -21,6 +21,7 @@ function ResetPasswordPageContent() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [userRole, setUserRole] = useState<string | null>(null);
   
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -50,6 +51,16 @@ function ResetPasswordPageContent() {
           } else {
             console.log('Session set successfully');
             setIsAuthenticated(true);
+            // Get user role for proper redirect
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              const { data: profile } = await supabase
+                .from('users')
+                .select('role')
+                .eq('id', user.id)
+                .single();
+              setUserRole(profile?.role || null);
+            }
           }
         } else {
           console.log('Missing tokens, checking if user is already authenticated...');
@@ -62,6 +73,13 @@ function ResetPasswordPageContent() {
           } else {
             console.log('User is already authenticated:', user.email);
             setIsAuthenticated(true);
+            // Get user role for proper redirect
+            const { data: profile } = await supabase
+              .from('users')
+              .select('role')
+              .eq('id', user.id)
+              .single();
+            setUserRole(profile?.role || null);
           }
         }
       } catch (err) {
@@ -135,7 +153,10 @@ function ResetPasswordPageContent() {
               </AlertDescription>
             </Alert>
             <Button
-              onClick={() => router.push('/auth/login')}
+              onClick={() => {
+                const loginUrl = userRole === 'donor' ? '/auth/donor-login' : '/auth/login';
+                router.push(loginUrl);
+              }}
               className="w-full"
             >
               Go to Login
@@ -191,7 +212,7 @@ function ResetPasswordPageContent() {
             </Button>
             <div className="text-center">
               <Link
-                href="/auth/login"
+                href={userRole === 'donor' ? '/auth/donor-login' : '/auth/login'}
                 className="text-sm text-primary hover:text-primary/80 flex items-center justify-center gap-1"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -294,7 +315,7 @@ function ResetPasswordPageContent() {
 
             <div className="text-center">
               <Link
-                href="/auth/login"
+                href={userRole === 'donor' ? '/auth/donor-login' : '/auth/login'}
                 className="text-sm text-primary hover:text-primary/80 flex items-center justify-center gap-1"
               >
                 <ArrowLeft className="h-4 w-4" />

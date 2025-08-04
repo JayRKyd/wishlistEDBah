@@ -44,20 +44,20 @@ export default function Navbar() {
 
   return (
     <header className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+        <div className="flex justify-between items-center h-16 gap-2">
                      {/* Logo */}
            {userRole?.isAuthenticated ? (
              // Non-clickable logo for authenticated users
-             <div className="flex items-center">
-               <GraduationCap className="text-primary text-2xl mr-2" />
-               <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
+             <div className="flex items-center min-w-0">
+               <GraduationCap className="text-primary text-xl sm:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
+               <h1 className="text-sm sm:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
              </div>
            ) : (
              // Clickable logo for public users
-             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-               <GraduationCap className="text-primary text-2xl mr-2" />
-               <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
+             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity min-w-0">
+               <GraduationCap className="text-primary text-xl sm:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
+               <h1 className="text-sm sm:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
              </Link>
            )}
           
@@ -109,7 +109,7 @@ export default function Navbar() {
            </nav>
 
                      {/* User Actions */}
-           <div className="flex items-center space-x-4">
+           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
              {userRole?.isAuthenticated ? (
                // Authenticated user actions
                <>
@@ -135,14 +135,14 @@ export default function Navbar() {
                </>
             ) : (
                              // Public actions - different buttons for different user types
-               <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
+               <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 min-w-0">
                  <DropdownMenu>
                    <DropdownMenuTrigger asChild>
-                     <Button size="sm" className="sm:size-default text-xs sm:text-sm">
-                       <GraduationCap className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                     <Button size="sm" className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                       <GraduationCap className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                        <span className="hidden sm:inline">I'm a Teacher</span>
                        <span className="sm:hidden">Teacher</span>
-                       <ChevronDown className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+                       <ChevronDown className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
                      </Button>
                    </DropdownMenuTrigger>
                    <DropdownMenuContent align="end">
@@ -160,9 +160,9 @@ export default function Navbar() {
                      </DropdownMenuItem>
                    </DropdownMenuContent>
                  </DropdownMenu>
-                 <Button variant="outline" asChild size="sm" className="sm:size-default text-xs sm:text-sm">
+                 <Button variant="outline" asChild size="sm" className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
                    <Link href="/auth/donor-login">
-                     <Heart className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                     <Heart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                      <span className="hidden sm:inline">I Want to Help</span>
                      <span className="sm:hidden">Help</span>
                    </Link>

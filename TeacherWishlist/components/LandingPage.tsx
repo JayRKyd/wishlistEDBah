@@ -164,30 +164,30 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">For Teachers</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">1</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">1</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Create Your Account</h4>
-                    <p className="text-gray-600">Sign up and verify your teacher status</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">2</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Build Your Wishlist</h4>
-                    <p className="text-gray-600">Add items your classroom needs with descriptions and quantities</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Create Your Account</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Sign up and verify your teacher status</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">3</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">2</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Share & Receive</h4>
-                    <p className="text-gray-600">Share your wishlist and coordinate with donors</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Build Your Wishlist</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Add items your classroom needs with descriptions and quantities</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">3</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Share & Receive</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Share your wishlist and coordinate with donors</p>
                   </div>
                 </div>
               </div>
@@ -197,30 +197,30 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">For Donors</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">1</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">1</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Browse Wishlists</h4>
-                    <p className="text-gray-600">Find teachers and classrooms that need support</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">2</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Pledge Items</h4>
-                    <p className="text-gray-600">Commit to donating specific items - no payment required</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Browse Wishlists</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Find teachers and classrooms that need support</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">3</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">2</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Coordinate Delivery</h4>
-                    <p className="text-gray-600">Contact the teacher to arrange donation drop-off</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Pledge Items</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Commit to donating specific items - no payment required</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">3</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Coordinate Delivery</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Contact the teacher to arrange donation drop-off</p>
                   </div>
                 </div>
               </div>

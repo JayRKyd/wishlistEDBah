@@ -59,10 +59,10 @@ export default function PledgeModal({
   const { data: userRole } = useUserRole();
 
   const [formData, setFormData] = useState({
-    amount: item?.estimated_cost ? parseFloat(item.estimated_cost.replace(/[^0-9.]/g, '')) || 0 : 0,
+    amount: item?.estimated_cost ? parseFloat(item.estimated_cost) : 0,
     quantity: 1,
-    message: "",
-    paymentMethod: "bank_transfer"
+    paymentMethod: 'bank_transfer', // Default to bank transfer only
+    message: '',
   });
 
   const [step, setStep] = useState(1); // 1: Pledge Details, 2: Payment Method, 3: Confirmation
@@ -107,10 +107,10 @@ export default function PledgeModal({
       
       // Reset form
       setFormData({
-        amount: item?.estimated_cost ? parseFloat(item.estimated_cost.replace(/[^0-9.]/g, '')) || 0 : 0,
+        amount: item?.estimated_cost ? parseFloat(item.estimated_cost) : 0,
         quantity: 1,
-        message: "",
-        paymentMethod: "bank_transfer"
+        paymentMethod: 'bank_transfer', // Default to bank transfer only
+        message: '',
       });
       setStep(1);
     },
@@ -337,40 +337,14 @@ export default function PledgeModal({
                       How would you like to make your donation?
                     </Label>
                     
-                    <div className="mt-3 space-y-2 sm:space-y-3">
-                      <div 
-                        className={`border rounded-lg p-3 sm:p-4 cursor-pointer transition-colors ${
-                          formData.paymentMethod === 'bank_transfer' 
-                            ? 'border-primary bg-blue-50' 
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                        onClick={() => handleInputChange('paymentMethod', 'bank_transfer')}
-                      >
+                    <div className="mt-3">
+                      <div className="border rounded-lg p-3 sm:p-4 border-primary bg-blue-50">
                         <div className="flex items-center space-x-2 sm:space-x-3">
                           <Building2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                           <div className="min-w-0 flex-1">
                             <h4 className="font-medium text-gray-900 text-sm sm:text-base">Bank Transfer</h4>
                             <p className="text-xs sm:text-sm text-gray-600 break-words">
-                              Direct transfer to teacher's bank account (Recommended)
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div 
-                        className={`border rounded-lg p-3 sm:p-4 cursor-pointer transition-colors ${
-                          formData.paymentMethod === 'cash' 
-                            ? 'border-primary bg-blue-50' 
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                        onClick={() => handleInputChange('paymentMethod', 'cash')}
-                      >
-                        <div className="flex items-center space-x-2 sm:space-x-3">
-                          <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                          <div className="min-w-0 flex-1">
-                            <h4 className="font-medium text-gray-900 text-sm sm:text-base">Cash Delivery</h4>
-                            <p className="text-xs sm:text-sm text-gray-600 break-words">
-                              Arrange to deliver cash directly to teacher
+                              Direct transfer to teacher's bank account
                             </p>
                           </div>
                         </div>
@@ -430,9 +404,7 @@ export default function PledgeModal({
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Payment method:</span>
-                        <span className="font-medium">
-                          {formData.paymentMethod === 'bank_transfer' ? 'Bank Transfer' : 'Cash Delivery'}
-                        </span>
+                        <span className="font-medium">Bank Transfer</span>
                       </div>
                       <div className="flex justify-between pt-2 border-t border-gray-200">
                         <span className="font-medium text-gray-900">Total Pledge:</span>

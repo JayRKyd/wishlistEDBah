@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import LandingPage from '@/components/LandingPage'
 
-export default function RootPage() {
+function HomePageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
@@ -38,4 +38,12 @@ export default function RootPage() {
   }, [searchParams, router, supabase])
 
   return <LandingPage />
+}
+
+export default function RootPage() {
+  return (
+    <Suspense fallback={<LandingPage />}>
+      <HomePageContent />
+    </Suspense>
+  )
 }

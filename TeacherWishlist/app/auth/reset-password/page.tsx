@@ -27,21 +27,40 @@ function ResetPasswordPageContent() {
   const accessToken = searchParams.get('access_token');
   const refreshToken = searchParams.get('refresh_token');
 
+  console.log('Reset password page - tokens:', { accessToken: !!accessToken, refreshToken: !!refreshToken });
+
   useEffect(() => {
     // If we have tokens, exchange them for a session
     if (accessToken && refreshToken) {
       const exchangeTokens = async () => {
+        console.log('Setting session with tokens...');
         const { error } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken,
         });
 
         if (error) {
+          console.log('Session error:', error);
           setError("Invalid or expired reset link. Please request a new one.");
+        } else {
+          console.log('Session set successfully');
         }
       };
 
       exchangeTokens();
+    } else {
+      console.log('Missing tokens, checking if user is already authenticated...');
+      // Check if user is already authenticated (from verification page)
+      const checkAuth = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          console.log('No user found, showing invalid link error');
+          setError("Invalid or expired reset link. Please request a new one.");
+        } else {
+          console.log('User is already authenticated:', user.email);
+        }
+      };
+      checkAuth();
     }
   }, [accessToken, refreshToken, supabase.auth]);
 

@@ -36,12 +36,14 @@ function VerifyPageContent() {
               setMessage('Invalid or expired password reset link. Please request a new one.')
               return
             }
-            // Successfully exchanged, now redirect to reset password page with tokens
-            if (data.session) {
-              router.push(`/auth/reset-password?access_token=${data.session.access_token}&refresh_token=${data.session.refresh_token}`)
-            } else {
-              router.push('/auth/reset-password')
-            }
+                         // Successfully exchanged, now redirect to reset password page with tokens
+             if (data.session) {
+               console.log('Session obtained, redirecting with tokens');
+               router.push(`/auth/reset-password?access_token=${data.session.access_token}&refresh_token=${data.session.refresh_token}`)
+             } else {
+               console.log('No session in response, redirecting without tokens');
+               router.push('/auth/reset-password')
+             }
             return
           } catch (error) {
             console.error('Error exchanging recovery token:', error)

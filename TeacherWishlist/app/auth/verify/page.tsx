@@ -76,8 +76,12 @@ function VerifyPageContent() {
             router.push('/pending-verification')
             return
           }
+        } else if (userProfile?.role === 'donor') {
+          // Donor account, redirect to donor dashboard
+          router.push('/donor/dashboard')
+          return
         } else {
-          // Not a teacher, redirect to dashboard (for donors, etc.)
+          // Admin or other roles, redirect to appropriate dashboard
           router.push('/dashboard')
           return
         }

@@ -17,8 +17,84 @@ function VerifyPageContent() {
 
   useEffect(() => {
     const handleVerification = async () => {
+      // Handle both formats: token_hash+type (email verification) and code (password reset)
       const token_hash = searchParams.get('token_hash')
       const type = searchParams.get('type')
+      const code = searchParams.get('code')
+      
+      console.log('Verification params:', { token_hash, type, code })
+      
+      if (code) {
+        // This could be a password reset or email verification code
+        // Try to verify it as an OTP first
+        try {
+          console.log('Attempting to verify OTP with code:', code)
+          const { error } = await supabase.auth.verifyOtp({
+            token_hash: code,
+            type: 'signup' // Try signup first, then recovery if needed
+          })
+
+          if (error) {
+            console.log('Signup verification failed, trying recovery:', error.message)
+            // Try as recovery (password reset)
+            const { error: recoveryError } = await supabase.auth.verifyOtp({
+              token_hash: code,
+              type: 'recovery'
+            })
+
+            if (recoveryError) {
+              setStatus('error')
+              setMessage('Invalid or expired verification link')
+              return
+            }
+          }
+
+          // Success! Now handle the user redirect
+          const { data: { user } } = await supabase.auth.getUser()
+          
+          if (!user) {
+            setStatus('error')
+            setMessage('User not found')
+            return
+          }
+
+          // Check user role and redirect accordingly
+          const { data: userProfile } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+          if (userProfile?.role === 'teacher') {
+            const { data: teacher } = await supabase
+              .from('teachers')
+              .select('is_teacher_verified')
+              .eq('user_id', user.id)
+              .single()
+
+            if (!teacher) {
+              router.push('/dashboard')
+            } else if (teacher.is_teacher_verified) {
+              router.push('/dashboard')
+            } else {
+              router.push('/pending-verification')
+            }
+          } else if (userProfile?.role === 'donor') {
+            router.push('/donor/dashboard')
+          } else {
+            router.push('/dashboard')
+          }
+
+          setStatus('success')
+          setMessage('Email verified successfully!')
+          return
+        } catch (error) {
+          console.error('Verification error:', error)
+          setStatus('error')
+          setMessage('Verification failed. Please try again.')
+          return
+        }
+      }
       
       if (!token_hash || !type) {
         setStatus('error')

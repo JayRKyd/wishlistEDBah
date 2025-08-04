@@ -165,6 +165,41 @@ export default function WishlistPage() {
     }
   };
 
+  const handleContactTeacher = () => {
+    const teacher = wishlist?.teachers;
+    const user = teacher?.users;
+    
+    if (!user?.email) {
+      // If no email is available, show a message or fallback
+      alert('Teacher contact information is not available.');
+      return;
+    }
+
+    // Create email subject and body
+    const subject = encodeURIComponent(`Support for ${user?.first_name} ${user?.last_name}'s Classroom Wishlist`);
+    const body = encodeURIComponent(
+      `Hello ${user?.first_name} ${user?.last_name},
+
+I saw your classroom wishlist on WishListED Bahamas and would like to help support your classroom!
+
+Teacher: ${user?.first_name} ${user?.last_name}
+School: ${teacher?.school}
+Grade: ${teacher?.grade}
+Location: ${teacher?.location}
+
+Wishlist: ${window.location.href}
+
+Please let me know how I can best help support your classroom needs.
+
+Best regards,
+[Your name]`
+    );
+
+    // Open default email client
+    const mailtoLink = `mailto:${user.email}?subject=${subject}&body=${body}`;
+    window.open(mailtoLink, '_blank');
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -272,7 +307,10 @@ export default function WishlistPage() {
                   <Share className="mr-2 h-4 w-4" />
                   Share
                 </Button>
-                <Button className="bg-blue-500 hover:bg-blue-600 text-white">
+                <Button 
+                  onClick={handleContactTeacher}
+                  className="bg-blue-500 hover:bg-blue-600 text-white"
+                >
                   <Mail className="mr-2 h-4 w-4" />
                   Contact Teacher
                 </Button>

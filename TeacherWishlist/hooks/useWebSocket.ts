@@ -19,7 +19,7 @@ export function useWebSocket() {
         ws.current = new WebSocket(wsUrl);
 
         ws.current.onopen = () => {
-          console.log('WebSocket connected');
+          // WebSocket connected
         };
 
         ws.current.onmessage = (event) => {
@@ -32,8 +32,7 @@ export function useWebSocket() {
         };
 
         ws.current.onclose = () => {
-          console.log('WebSocket disconnected');
-          // Attempt to reconnect after 3 seconds
+          // WebSocket disconnected - attempting to reconnect after 3 seconds
           setTimeout(connect, 3000);
         };
 
@@ -84,7 +83,8 @@ export function useWebSocket() {
         break;
         
       default:
-        console.log('Unknown WebSocket message type:', message.type);
+        // Unknown WebSocket message type
+        break;
     }
   };
 

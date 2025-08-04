@@ -15,6 +15,7 @@ export function useUserRole() {
           profile: null,
           isTeacher: false,
           isDonor: false,
+          isAdmin: false,
           isAuthenticated: false,
         };
       }
@@ -32,6 +33,7 @@ export function useUserRole() {
           profile: null,
           isTeacher: false,
           isDonor: false,
+          isAdmin: false,
           isAuthenticated: true,
         };
       }
@@ -41,6 +43,7 @@ export function useUserRole() {
         profile,
         isTeacher: profile.role === 'teacher',
         isDonor: profile.role === 'donor',
+        isAdmin: profile.role === 'admin',
         isAuthenticated: true,
       };
     },

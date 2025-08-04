@@ -20,6 +20,8 @@ export interface Teacher {
   location: string
   bio: string | null
   is_verified: boolean
+  is_teacher_verified: boolean
+  verification_comment: string | null
   amazon_wishlist_url: string | null
   bank_name: string | null
   account_number: string | null
@@ -117,6 +119,8 @@ export interface InsertTeacher {
   location: string
   bio?: string | null
   is_verified?: boolean
+  is_teacher_verified?: boolean
+  verification_comment?: string | null
   amazon_wishlist_url?: string | null
   bank_name?: string | null
   account_number?: string | null

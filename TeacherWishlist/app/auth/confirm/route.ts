@@ -15,7 +15,40 @@ export async function GET(request: NextRequest) {
     })
 
     if (!error) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      // Get the verified user
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        // Check if this is a teacher account
+        const { data: userProfile } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+
+        if (userProfile?.role === 'teacher') {
+          // Check if teacher profile exists
+          const { data: teacher } = await supabase
+            .from('teachers')
+            .select('is_teacher_verified')
+            .eq('user_id', user.id)
+            .single()
+
+          if (!teacher) {
+            // Teacher profile doesn't exist yet, redirect to profile creation
+            return NextResponse.redirect(new URL('/dashboard', request.url))
+          } else if (teacher.is_teacher_verified) {
+            // Teacher is verified, redirect to dashboard
+            return NextResponse.redirect(new URL('/dashboard', request.url))
+          } else {
+            // Teacher is not verified, redirect to pending verification page
+            return NextResponse.redirect(new URL('/pending-verification', request.url))
+          }
+        } else {
+          // Not a teacher, redirect to dashboard (for donors, etc.)
+          return NextResponse.redirect(new URL('/dashboard', request.url))
+        }
+      }
     }
   }
 

@@ -52,46 +52,58 @@ export default function Navbar() {
             <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
           </Link>
           
-          {/* Navigation Links */}
-          <nav className="hidden md:flex space-x-8">
-            {userRole?.isAuthenticated ? (
-              // Authenticated user navigation
-              <>
-                {userRole.isTeacher && (
-                  <Link href="/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                    <LayoutDashboard className="inline-block mr-1 h-4 w-4" />
-                    Dashboard
-                  </Link>
-                )}
-                {userRole.isDonor && (
-                  <Link href="/donor/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                    <Heart className="inline-block mr-1 h-4 w-4" />
-                    My Donations
-                  </Link>
-                )}
-                <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  <Gift className="inline-block mr-1 h-4 w-4" />
-                  Browse Wishlists
-                </Link>
-                <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  Home
-                </Link>
-              </>
-            ) : (
-              // Public navigation
-              <>
-                <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  Browse Wishlists
-                </Link>
-                <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  Home
-                </Link>
-                <a href="#how-it-works" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  How It Works
-                </a>
-              </>
-            )}
-          </nav>
+                     {/* Navigation Links */}
+           <nav className="hidden md:flex space-x-8">
+             {userRole?.isAuthenticated ? (
+               // Authenticated user navigation
+               <>
+                 {userRole.isTeacher && (
+                   <>
+                     <Link href="/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                       <LayoutDashboard className="inline-block mr-1 h-4 w-4" />
+                       Dashboard
+                     </Link>
+                     <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                       <Gift className="inline-block mr-1 h-4 w-4" />
+                       Browse Wishlists
+                     </Link>
+                     <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                       Home
+                     </Link>
+                   </>
+                 )}
+                 {userRole.isDonor && (
+                   <>
+                     <Link href="/donor/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                       <Heart className="inline-block mr-1 h-4 w-4" />
+                       My Donations
+                     </Link>
+                     <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                       <Gift className="inline-block mr-1 h-4 w-4" />
+                       Browse Wishlists
+                     </Link>
+                     <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                       Home
+                     </Link>
+                   </>
+                 )}
+                 {/* Admin users get no navigation links - they only manage verification */}
+               </>
+             ) : (
+               // Public navigation
+               <>
+                 <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                   Browse Wishlists
+                 </Link>
+                 <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                   Home
+                 </Link>
+                 <a href="#how-it-works" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                   How It Works
+                 </a>
+               </>
+             )}
+           </nav>
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
@@ -102,6 +114,7 @@ export default function Navbar() {
                   Welcome, {displayName} 
                   {userRole.isDonor && <Heart className="inline-block ml-1 h-3 w-3 text-red-500" />}
                   {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
+                  {userRole.isAdmin && <GraduationCap className="inline-block ml-1 h-3 w-3 text-purple-500" />}
                 </span>
                 <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut}>
                   {isLoggingOut ? (

@@ -40,39 +40,27 @@ export default function ActivityFeed() {
         .from('teachers')
         .select('id, grade, school')
         .limit(5);
-      
-      console.log('All teachers test:', { allTeachers, allTeachersError });
 
       // Then get teacher data for each wishlist
       const enhancedWishlists = await Promise.all(
         (wishlists || []).map(async (wishlist) => {
           if (!wishlist.teacher_id) {
-            console.warn('Wishlist missing teacher_id:', wishlist.id);
+            // Wishlist missing teacher_id - returning null
             return {
               ...wishlist,
               teachers: null
             };
           }
 
-          // Debug: Let's see if we can fetch ANY teacher data first
-          console.log('Attempting to fetch teacher with ID:', wishlist.teacher_id);
-          
           // First, get teacher basic info
           const { data: teacherData, error: teacherError } = await supabase
             .from('teachers')
             .select('grade, school, location, user_id')
             .eq('id', wishlist.teacher_id)
             .single();
-            
-          console.log('Teacher query result:', { teacherData, teacherError });
 
           if (teacherError) {
-            console.error('Teacher fetch error for teacher_id', wishlist.teacher_id, ':', teacherError);
-            console.error('Error details:', {
-              code: teacherError.code,
-              message: teacherError.message,
-              details: teacherError.details
-            });
+            // Teacher fetch error - returning null
             return null;
           }
 
@@ -84,8 +72,7 @@ export default function ActivityFeed() {
             .single();
 
           if (userError) {
-            console.error('User fetch error for teacher', wishlist.teacher_id, ':', userError);
-            // Continue with teacher data but no user info
+            // User fetch error - continue with teacher data but no user info
           }
 
           const combinedTeacherData = {
@@ -103,8 +90,6 @@ export default function ActivityFeed() {
       // Filter out wishlists with missing teacher data
       const validWishlists = enhancedWishlists.filter(wishlist => wishlist !== null && wishlist.teachers !== null);
 
-      console.log('ActivityFeed original teacher_ids:', wishlists?.map(w => ({ id: w.id, teacher_id: w.teacher_id })));
-      console.log('ActivityFeed valid wishlists:', validWishlists);
       return validWishlists;
     },
     retry: false,

@@ -59,7 +59,7 @@ export default function DonorAuthModal({
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center mb-4">
             <Heart className="h-8 w-8 text-white" />
           </div>
-          <DialogTitle className="text-xl font-bold text-gray-900">
+          <DialogTitle className="text-xl font-bold text-center text-gray-900">
             Support This Teacher
           </DialogTitle>
         </DialogHeader>
@@ -133,10 +133,10 @@ export default function DonorAuthModal({
           {/* Footer */}
           <div className="text-center pt-4 border-t border-gray-200">
             <p className="text-xs text-gray-500">
-              ✨ Creating an account takes less than 30 seconds!
+              Creating an account takes less than 30 seconds!
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              Join the community of donors supporting Bahamian education
+              Join the community of donors supporting Bahamian education!
             </p>
           </div>
         </div>

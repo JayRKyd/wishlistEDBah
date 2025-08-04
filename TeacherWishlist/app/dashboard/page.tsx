@@ -173,6 +173,13 @@ export default function TeacherDashboard() {
     }
   }, [user, userLoading, router]);
 
+  // Teacher verification check
+  useEffect(() => {
+    if (teacher && !teacher.is_teacher_verified) {
+      router.push('/pending-verification');
+    }
+  }, [teacher, router]);
+
   const handleMarkFulfilled = (itemId: number, isFulfilled: boolean) => {
     updateItemMutation.mutate({
       itemId,

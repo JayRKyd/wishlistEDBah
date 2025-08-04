@@ -76,15 +76,17 @@ export default function TeacherProfileForm({ teacher, onClose, isOpen }: Teacher
       const teacherData: InsertTeacher = {
         ...teacherFields,
         user_id: user.id,
-        is_verified: true, // Auto-verify teachers when they create their profile
+        is_verified: true, // Email verification is complete
+        is_teacher_verified: false, // Teacher verification pending admin approval
       };
 
-      // Update user's first and last name
+      // Update user's first and last name and set role to teacher
       const { error: userError } = await supabase
         .from('users')
         .update({ 
           first_name, 
           last_name,
+          role: 'teacher',
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id);
@@ -102,6 +104,8 @@ export default function TeacherProfileForm({ teacher, onClose, isOpen }: Teacher
         throw checkError;
       }
 
+      let isNewTeacher = false;
+      
       if (existingTeacher || teacher) {
         // Update existing teacher
         const { error } = await supabase
@@ -117,21 +121,35 @@ export default function TeacherProfileForm({ teacher, onClose, isOpen }: Teacher
           .insert([teacherData]);
         
         if (error) throw error;
+        isNewTeacher = true;
       }
+      
+      return { isNewTeacher };
     },
-    onSuccess: () => {
-      toast({
-        title: "Profile Updated",
-        description: "Your teacher profile has been saved successfully.",
-      });
+    onSuccess: (data) => {
+      if (data?.isNewTeacher) {
+        toast({
+          title: "Profile Created!",
+          description: "Your teacher profile has been created. Your account is now under review.",
+        });
+        // Redirect to pending verification page for new teachers
+        setTimeout(() => {
+          router.push('/pending-verification');
+        }, 500);
+      } else {
+        toast({
+          title: "Profile Updated",
+          description: "Your teacher profile has been updated successfully.",
+        });
+        // Redirect to dashboard for existing teachers
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 500);
+      }
+      
       queryClient.invalidateQueries({ queryKey: ['teacher-profile'] });
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       onClose();
-      
-      // Redirect to dashboard after profile creation/update
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 500);
     },
     onError: (error) => {
       console.error('Profile update error:', error);

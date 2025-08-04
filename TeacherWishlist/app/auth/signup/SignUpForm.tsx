@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { GraduationCap, Mail, Lock, User, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -14,9 +15,11 @@ import { useToast } from '@/hooks/use-toast'
 export default function SignUpForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [privacyConsent, setPrivacyConsent] = useState(false)
   const router = useRouter()
   const supabase = createClient()
   const { toast } = useToast()
@@ -24,6 +27,28 @@ export default function SignUpForm() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+
+    // Validate password confirmation
+    if (password !== confirmPassword) {
+      toast({
+        title: "Passwords don't match",
+        description: "Please make sure your passwords match.",
+        variant: "destructive",
+      })
+      setIsLoading(false)
+      return
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      toast({
+        title: "Password too short",
+        description: "Password must be at least 6 characters long.",
+        variant: "destructive",
+      })
+      setIsLoading(false)
+      return
+    }
 
     try {
       const { error } = await supabase.auth.signUp({
@@ -43,13 +68,14 @@ export default function SignUpForm() {
           description: error.message,
           variant: "destructive",
         })
-      } else {
-        toast({
-          title: "Account Created!",
-          description: "Please check your email to confirm your account.",
-        })
-        router.push('/auth/login')
-      }
+             } else {
+         toast({
+           title: "Account Created!",
+           description: "Please check your email to confirm your account.",
+         })
+         // Don't redirect to login - let Supabase handle the email verification flow
+         // The user will receive an email with a verification link
+       }
     } catch (error) {
       toast({
         title: "An error occurred",
@@ -138,7 +164,53 @@ export default function SignUpForm() {
               <p className="text-xs text-gray-500">Password must be at least 6 characters</p>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm your password"
+                  className="pl-10"
+                  required
+                />
+              </div>
+              {confirmPassword && password !== confirmPassword && (
+                <p className="text-xs text-red-500">Passwords don't match</p>
+              )}
+              {confirmPassword && password === confirmPassword && (
+                <p className="text-xs text-green-500">Passwords match</p>
+              )}
+            </div>
+
+            <div className="flex items-start space-x-2">
+              <Checkbox
+                id="privacy-consent"
+                checked={privacyConsent}
+                onCheckedChange={(checked) => setPrivacyConsent(checked as boolean)}
+                className="mt-1"
+              />
+              <div className="grid gap-1.5 leading-none">
+                <Label
+                  htmlFor="privacy-consent"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I consent to the sharing of my banking information
+                </Label>
+                <p className="text-xs text-gray-500">
+                  By checking this box, you agree to our{' '}
+                  <Link href="/privacy-policy" className="text-primary hover:underline">
+                    Privacy Policy
+                  </Link>{' '}
+                  and consent to sharing your banking information with donors for donation purposes.
+                </p>
+              </div>
+            </div>
+
+            <Button type="submit" className="w-full" disabled={isLoading || !privacyConsent}>
               {isLoading ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
@@ -162,11 +234,7 @@ export default function SignUpForm() {
             </p>
           </div>
 
-          <div className="mt-4 text-center">
-            <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">
-              ← Back to home
-            </Link>
-          </div>
+
         </CardContent>
       </Card>
     </div>

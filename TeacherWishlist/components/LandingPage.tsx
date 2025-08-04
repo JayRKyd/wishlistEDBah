@@ -31,9 +31,12 @@ export default function LandingPage() {
 
       if (itemsError) throw itemsError;
 
-      // Get unique donors count (for now we'll use a placeholder since pledges system isn't implemented yet)
-      // TODO: When pledges system is implemented, query: SELECT COUNT(DISTINCT donor_email) FROM pledges WHERE status = 'completed'
-      const generousDonors = 0;
+      // Get unique donors count
+      const { count: generousDonors, error: donorsError } = await supabase
+        .from('donors')
+        .select('*', { count: 'exact', head: true });
+
+      if (donorsError) throw donorsError;
 
       return {
         activeTeachers: activeTeachers || 0,
@@ -78,12 +81,13 @@ export default function LandingPage() {
                 <GraduationCap className="mr-2 h-4 w-4" />
                 I'm a Teacher
               </Button>
-              <Button variant="outline" asChild>
-                <Link href="/browse">
-                  <Heart className="mr-2 h-4 w-4" />
-                  I Want to Help
-                </Link>
-              </Button>
+                             <Button 
+                 variant="outline"
+                 onClick={() => window.location.href = '/auth/donor-signup'}
+               >
+                 <Heart className="mr-2 h-4 w-4" />
+                 I Want to Help
+               </Button>
             </div>
           </div>
         </div>
@@ -155,9 +159,9 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">For Teachers</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <div className="flex flex-col">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">For Teachers</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
@@ -189,8 +193,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">For Donors</h3>
+            <div className="flex flex-col">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">For Donors</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-3 mt-1">
@@ -243,8 +247,8 @@ export default function LandingPage() {
               <h4 className="text-lg font-semibold mb-4">For Teachers</h4>
               <ul className="space-y-2 text-gray-300">
                 <li><a href="#" className="hover:text-white transition-colors">Create Account</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">How to Create Wishlists</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Share Your List</a></li>
+                <li><Link href="/how-to-create-wishlists" className="hover:text-white transition-colors">How to Create Wishlists</Link></li>
+                                 <li><Link href="/share-your-list" className="hover:text-white transition-colors">Share Your List</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">Success Stories</a></li>
               </ul>
             </div>
@@ -253,9 +257,10 @@ export default function LandingPage() {
               <h4 className="text-lg font-semibold mb-4">For Donors</h4>
               <ul className="space-y-2 text-gray-300">
                 <li><Link href="/browse" className="hover:text-white transition-colors">Browse Wishlists</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors">How to Help</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Track Your Impact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Donation Guidelines</a></li>
+                                 <li><Link href="/how-to-help" className="hover:text-white transition-colors">How to Help</Link></li>
+                                 <li><Link href="/track-your-impact" className="hover:text-white transition-colors">Track Your Impact</Link></li>
+                <li><Link href="/donation-guidelines" className="hover:text-white transition-colors">Donation Guidelines</Link></li>
+                
               </ul>
             </div>
           </div>
@@ -265,8 +270,8 @@ export default function LandingPage() {
               &copy; 2025 WishListED Bahamas. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+              <a href="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+
               <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Contact Us</a>
             </div>
           </div>

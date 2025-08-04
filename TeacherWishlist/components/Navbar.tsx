@@ -45,19 +45,19 @@ export default function Navbar() {
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
-        <div className="flex justify-between items-center h-16 gap-2">
+        <div className="flex justify-between items-center h-16 gap-1 sm:gap-2">
                      {/* Logo */}
            {userRole?.isAuthenticated ? (
              // Non-clickable logo for authenticated users
-             <div className="flex items-center min-w-0">
-               <GraduationCap className="text-primary text-xl sm:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
-               <h1 className="text-sm sm:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+             <div className="flex items-center min-w-0 flex-shrink-0">
+               <GraduationCap className="text-primary text-lg sm:text-xl lg:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
+               <h1 className="text-xs sm:text-sm lg:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
              </div>
            ) : (
              // Clickable logo for public users
-             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity min-w-0">
-               <GraduationCap className="text-primary text-xl sm:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
-               <h1 className="text-sm sm:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity min-w-0 flex-shrink-0">
+               <GraduationCap className="text-primary text-lg sm:text-xl lg:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
+               <h1 className="text-xs sm:text-sm lg:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
              </Link>
            )}
           
@@ -109,7 +109,7 @@ export default function Navbar() {
            </nav>
 
                      {/* User Actions */}
-           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
+           <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
              {userRole?.isAuthenticated ? (
                // Authenticated user actions
                <>
@@ -134,11 +134,11 @@ export default function Navbar() {
                  </Button>
                </>
             ) : (
-                             // Public actions - different buttons for different user types
-               <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 min-w-0">
+                             // Public actions - more compact for mobile
+               <div className="flex gap-1 sm:gap-2 min-w-0">
                  <DropdownMenu>
                    <DropdownMenuTrigger asChild>
-                     <Button size="sm" className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                     <Button size="sm" className="text-xs sm:text-sm px-2 sm:px-3 h-8 sm:h-9">
                        <GraduationCap className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                        <span className="hidden sm:inline">I'm a Teacher</span>
                        <span className="sm:hidden">Teacher</span>
@@ -160,7 +160,7 @@ export default function Navbar() {
                      </DropdownMenuItem>
                    </DropdownMenuContent>
                  </DropdownMenu>
-                 <Button variant="outline" asChild size="sm" className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                 <Button variant="outline" asChild size="sm" className="text-xs sm:text-sm px-2 sm:px-3 h-8 sm:h-9">
                    <Link href="/auth/donor-login">
                      <Heart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                      <span className="hidden sm:inline">I Want to Help</span>

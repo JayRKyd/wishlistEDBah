@@ -14,7 +14,7 @@ export default function ActivityFeed() {
   const { data: recentWishlists, isLoading } = useQuery({
     queryKey: ['recent-wishlists'],
     queryFn: async () => {
-      // First, get basic wishlist data
+      // Get wishlists with teacher and user data in a single query
       const { data: wishlists, error: wishlistError } = await supabase
         .from('wishlists')
         .select(`
@@ -27,70 +27,28 @@ export default function ActivityFeed() {
           wishlist_items(
             id,
             is_fulfilled
+          ),
+          teachers!inner(
+            grade,
+            school,
+            location,
+            user_id,
+            users!inner(
+              first_name,
+              last_name
+            )
           )
         `)
         .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(6);
 
-      if (wishlistError) throw wishlistError;
-      
-      // Debug: Test if we can access teachers table at all
-      const { data: allTeachers, error: allTeachersError } = await supabase
-        .from('teachers')
-        .select('id, grade, school')
-        .limit(5);
+      if (wishlistError) {
+        console.error('Wishlist query error:', wishlistError);
+        throw wishlistError;
+      }
 
-      // Then get teacher data for each wishlist
-      const enhancedWishlists = await Promise.all(
-        (wishlists || []).map(async (wishlist) => {
-          if (!wishlist.teacher_id) {
-            // Wishlist missing teacher_id - returning null
-            return {
-              ...wishlist,
-              teachers: null
-            };
-          }
-
-          // First, get teacher basic info
-          const { data: teacherData, error: teacherError } = await supabase
-            .from('teachers')
-            .select('grade, school, location, user_id')
-            .eq('id', wishlist.teacher_id)
-            .single();
-
-          if (teacherError) {
-            // Teacher fetch error - returning null
-            return null;
-          }
-
-          // Then get user info separately
-          const { data: userData, error: userError } = await supabase
-            .from('users')
-            .select('first_name, last_name')
-            .eq('id', teacherData.user_id)
-            .single();
-
-          if (userError) {
-            // User fetch error - continue with teacher data but no user info
-          }
-
-          const combinedTeacherData = {
-            ...teacherData,
-            users: userData || { first_name: 'Unknown', last_name: 'Teacher' }
-          };
-
-          return {
-            ...wishlist,
-            teachers: combinedTeacherData
-          };
-        })
-      );
-
-      // Filter out wishlists with missing teacher data
-      const validWishlists = enhancedWishlists.filter(wishlist => wishlist !== null && wishlist.teachers !== null);
-
-      return validWishlists;
+      return wishlists || [];
     },
     retry: false,
   });

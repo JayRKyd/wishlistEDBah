@@ -134,29 +134,52 @@ export default function Navbar() {
                    )}
                  </Button>
                </>
-                         ) : (
-                              // Public actions - hamburger menu for desktop too
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <Menu className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/login" className="flex items-center">
-                        <GraduationCap className="mr-2 h-4 w-4" />
-                        I'm a Teacher
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/donor-login" className="flex items-center">
-                        <Heart className="mr-2 h-4 w-4" />
-                        I Want to Help
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                                      ) : (
+               // Public actions - buttons on desktop, hamburger on mobile
+               <>
+                 {/* Desktop - Buttons */}
+                 <div className="hidden md:flex items-center space-x-4">
+                   <Button 
+                     onClick={() => window.location.href = '/auth/login'}
+                     className="bg-primary text-white hover:bg-blue-700"
+                   >
+                     <GraduationCap className="mr-2 h-4 w-4" />
+                     I'm a Teacher
+                   </Button>
+                   <Button 
+                     variant="outline"
+                     onClick={() => window.location.href = '/auth/donor-login'}
+                   >
+                     <Heart className="mr-2 h-4 w-4" />
+                     I Want to Help
+                   </Button>
+                 </div>
+                 
+                 {/* Mobile - Hamburger Menu */}
+                 <div className="md:hidden">
+                   <DropdownMenu>
+                     <DropdownMenuTrigger asChild>
+                       <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                         <Menu className="h-4 w-4" />
+                       </Button>
+                     </DropdownMenuTrigger>
+                     <DropdownMenuContent align="end" className="w-48">
+                       <DropdownMenuItem asChild>
+                         <Link href="/auth/login" className="flex items-center">
+                           <GraduationCap className="mr-2 h-4 w-4" />
+                           I'm a Teacher
+                         </Link>
+                       </DropdownMenuItem>
+                       <DropdownMenuItem asChild>
+                         <Link href="/auth/donor-login" className="flex items-center">
+                           <Heart className="mr-2 h-4 w-4" />
+                           I Want to Help
+                         </Link>
+                       </DropdownMenuItem>
+                     </DropdownMenuContent>
+                   </DropdownMenu>
+                 </div>
+               </>
              )}
           </div>
 

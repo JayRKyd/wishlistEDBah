@@ -19,6 +19,9 @@ function ResetPasswordPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -30,38 +33,47 @@ function ResetPasswordPageContent() {
   console.log('Reset password page - tokens:', { accessToken: !!accessToken, refreshToken: !!refreshToken });
 
   useEffect(() => {
-    // If we have tokens, exchange them for a session
-    if (accessToken && refreshToken) {
-      const exchangeTokens = async () => {
-        console.log('Setting session with tokens...');
-        const { error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        });
+    const initializeAuth = async () => {
+      try {
+        // If we have tokens, exchange them for a session
+        if (accessToken && refreshToken) {
+          console.log('Setting session with tokens...');
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
 
-        if (error) {
-          console.log('Session error:', error);
-          setError("Invalid or expired reset link. Please request a new one.");
+          if (error) {
+            console.log('Session error:', error);
+            setError("Invalid or expired reset link. Please request a new one.");
+            setIsAuthenticated(false);
+          } else {
+            console.log('Session set successfully');
+            setIsAuthenticated(true);
+          }
         } else {
-          console.log('Session set successfully');
+          console.log('Missing tokens, checking if user is already authenticated...');
+          // Check if user is already authenticated (from verification page)
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) {
+            console.log('No user found, showing invalid link error');
+            setError("Invalid or expired reset link. Please request a new one.");
+            setIsAuthenticated(false);
+          } else {
+            console.log('User is already authenticated:', user.email);
+            setIsAuthenticated(true);
+          }
         }
-      };
+      } catch (err) {
+        console.error('Auth initialization error:', err);
+        setError("An error occurred while initializing authentication.");
+        setIsAuthenticated(false);
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
 
-      exchangeTokens();
-    } else {
-      console.log('Missing tokens, checking if user is already authenticated...');
-      // Check if user is already authenticated (from verification page)
-      const checkAuth = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          console.log('No user found, showing invalid link error');
-          setError("Invalid or expired reset link. Please request a new one.");
-        } else {
-          console.log('User is already authenticated:', user.email);
-        }
-      };
-      checkAuth();
-    }
+    initializeAuth();
   }, [accessToken, refreshToken, supabase.auth]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -133,26 +145,6 @@ function ResetPasswordPageContent() {
       </div>
     );
   }
-
-  // Check if user is authenticated (either via tokens or already logged in)
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        console.log('User is authenticated:', user.email);
-        setIsAuthenticated(true);
-      } else {
-        console.log('No authenticated user found');
-        setIsAuthenticated(false);
-      }
-      setIsCheckingAuth(false);
-    };
-
-    checkAuthentication();
-  }, [supabase.auth]);
 
   // Show loading while checking authentication
   if (isCheckingAuth) {

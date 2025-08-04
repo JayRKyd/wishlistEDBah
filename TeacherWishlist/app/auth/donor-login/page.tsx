@@ -90,15 +90,7 @@ export default function DonorLoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back Link */}
-        <div className="mb-6">
-          <Link 
-            href="/browse" 
-            className="inline-flex items-center text-gray-600 hover:text-primary transition-colors"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Browse
-          </Link>
-        </div>
+
 
         <Card className="shadow-lg">
           <CardHeader className="text-center">

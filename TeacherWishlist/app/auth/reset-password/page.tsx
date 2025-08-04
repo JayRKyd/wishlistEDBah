@@ -134,7 +134,46 @@ function ResetPasswordPageContent() {
     );
   }
 
-  if (!accessToken || !refreshToken) {
+  // Check if user is authenticated (either via tokens or already logged in)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        console.log('User is authenticated:', user.email);
+        setIsAuthenticated(true);
+      } else {
+        console.log('No authenticated user found');
+        setIsAuthenticated(false);
+      }
+      setIsCheckingAuth(false);
+    };
+
+    checkAuthentication();
+  }, [supabase.auth]);
+
+  // Show loading while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-gray-900">
+              Loading...
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show error if not authenticated
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <Card className="w-full max-w-md">

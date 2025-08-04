@@ -67,9 +67,6 @@ export default function Navbar() {
                        <Gift className="inline-block mr-1 h-4 w-4" />
                        Browse Wishlists
                      </Link>
-                     <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                       Home
-                     </Link>
                    </>
                  )}
                  {userRole.isDonor && (

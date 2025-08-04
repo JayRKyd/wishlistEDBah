@@ -396,7 +396,6 @@ export default function WishlistForm({ teacherId, onClose, isOpen, existingWishl
                   <strong>Tips for better results:</strong>
                   <ul className="list-disc list-inside mt-1 space-y-1">
                     <li>Be specific with item names and descriptions</li>
-                    <li>Add purchase links (Amazon, etc.) for easy purchasing</li>
                     <li>Mark urgent items as high priority</li>
                     <li>Explain how items will benefit your students' learning</li>
                   </ul>

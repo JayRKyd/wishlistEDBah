@@ -329,10 +329,7 @@ export default function TeacherDashboard() {
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                     <CardTitle className="text-lg sm:text-xl">{wishlist.title || "My Classroom Wishlist"}</CardTitle>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                        <Share className="mr-2 h-4 w-4" />
-                        Share
-                      </Button>
+
                       <span className="text-xs sm:text-sm text-gray-500 break-all">Share Code: {wishlist.share_token}</span>
                     </div>
                   </div>
@@ -497,7 +494,7 @@ function WishlistItems({
                 )}
                 {item.is_fulfilled && (
                   <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                    ✅ Completed
+                    Completed
                   </span>
                 )}
               </div>

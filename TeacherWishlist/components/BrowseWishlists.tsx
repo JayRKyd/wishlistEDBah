@@ -207,8 +207,9 @@ export default function BrowseWishlists() {
 
         {/* Search and Filter Controls */}
         <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className="flex flex-col lg:flex-row gap-4">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col gap-4">
+              {/* Search Bar */}
               <div className="flex-1">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -222,99 +223,106 @@ export default function BrowseWishlists() {
                 </div>
               </div>
               
-              <div className="flex gap-2">
-                <Select value={location} onValueChange={setLocation}>
-                  <SelectTrigger className="min-w-[150px]">
-                    <SelectValue placeholder="All Locations" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Locations</SelectItem>
-                    <SelectItem value="Nassau">Nassau</SelectItem>
-                    <SelectItem value="Freeport">Freeport</SelectItem>
-                    <SelectItem value="Paradise Island">Paradise Island</SelectItem>
-                    <SelectItem value="Eleuthera">Eleuthera</SelectItem>
-                    <SelectItem value="Exuma">Exuma</SelectItem>
-                  </SelectContent>
-                </Select>
+              {/* Filter Controls */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                  <Select value={location} onValueChange={setLocation}>
+                    <SelectTrigger className="w-full sm:min-w-[150px]">
+                      <SelectValue placeholder="All Locations" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Locations</SelectItem>
+                      <SelectItem value="Nassau">Nassau</SelectItem>
+                      <SelectItem value="Freeport">Freeport</SelectItem>
+                      <SelectItem value="Paradise Island">Paradise Island</SelectItem>
+                      <SelectItem value="Eleuthera">Eleuthera</SelectItem>
+                      <SelectItem value="Exuma">Exuma</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={grade} onValueChange={setGrade}>
+                    <SelectTrigger className="w-full sm:min-w-[120px]">
+                      <SelectValue placeholder="All Grades" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Grades</SelectItem>
+                      <SelectItem value="Pre-K">Pre-K</SelectItem>
+                      <SelectItem value="Kindergarten">Kindergarten</SelectItem>
+                      <SelectItem value="Grade 1">Grade 1</SelectItem>
+                      <SelectItem value="Grade 2">Grade 2</SelectItem>
+                      <SelectItem value="Grade 3">Grade 3</SelectItem>
+                      <SelectItem value="Grade 4">Grade 4</SelectItem>
+                      <SelectItem value="Grade 5">Grade 5</SelectItem>
+                      <SelectItem value="Grade 6">Grade 6</SelectItem>
+                      <SelectItem value="Grade 7">Grade 7</SelectItem>
+                      <SelectItem value="Grade 8">Grade 8</SelectItem>
+                      <SelectItem value="Grade 9">Grade 9</SelectItem>
+                      <SelectItem value="Grade 10">Grade 10</SelectItem>
+                      <SelectItem value="Grade 11">Grade 11</SelectItem>
+                      <SelectItem value="Grade 12">Grade 12</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 
-                <Select value={grade} onValueChange={setGrade}>
-                  <SelectTrigger className="min-w-[120px]">
-                    <SelectValue placeholder="All Grades" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Grades</SelectItem>
-                    <SelectItem value="Pre-K">Pre-K</SelectItem>
-                    <SelectItem value="Kindergarten">Kindergarten</SelectItem>
-                    <SelectItem value="Grade 1">Grade 1</SelectItem>
-                    <SelectItem value="Grade 2">Grade 2</SelectItem>
-                    <SelectItem value="Grade 3">Grade 3</SelectItem>
-                    <SelectItem value="Grade 4">Grade 4</SelectItem>
-                    <SelectItem value="Grade 5">Grade 5</SelectItem>
-                    <SelectItem value="Grade 6">Grade 6</SelectItem>
-                    <SelectItem value="Grade 7">Grade 7</SelectItem>
-                    <SelectItem value="Grade 8">Grade 8</SelectItem>
-                    <SelectItem value="Grade 9">Grade 9</SelectItem>
-                    <SelectItem value="Grade 10">Grade 10</SelectItem>
-                    <SelectItem value="Grade 11">Grade 11</SelectItem>
-                    <SelectItem value="Grade 12">Grade 12</SelectItem>
-                  </SelectContent>
-                </Select>
-                
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <Filter className="mr-2 h-4 w-4" />
                   Filter
                 </Button>
               </div>
             </div>
             
+            {/* Filter Tags */}
             <div className="flex flex-wrap gap-2 mt-4">
               <Button 
                 variant={showHighPriorityOnly ? "default" : "outline"} 
                 size="sm" 
                 onClick={() => setShowHighPriorityOnly(!showHighPriorityOnly)}
-                className={showHighPriorityOnly 
+                className={`text-xs sm:text-sm ${showHighPriorityOnly 
                   ? "bg-orange-600 text-white hover:bg-orange-700" 
                   : "text-orange-600 border-orange-200 hover:bg-orange-50"
-                }
+                }`}
               >
-                ❗ High Priority Only
+                ❗ <span className="hidden sm:inline">High Priority Only</span>
+                <span className="sm:hidden">Priority</span>
               </Button>
               <Button 
                 variant={showAddedThisWeek ? "default" : "outline"} 
                 size="sm" 
                 onClick={() => setShowAddedThisWeek(!showAddedThisWeek)}
-                className={showAddedThisWeek 
+                className={`text-xs sm:text-sm ${showAddedThisWeek 
                   ? "bg-green-600 text-white hover:bg-green-700" 
                   : "text-green-600 border-green-200 hover:bg-green-50"
-                }
+                }`}
               >
-                🕐 Added This Week
+                🕐 <span className="hidden sm:inline">Added This Week</span>
+                <span className="sm:hidden">This Week</span>
               </Button>
               <Button 
                 variant={showScienceSupplies ? "default" : "outline"} 
                 size="sm" 
                 onClick={() => setShowScienceSupplies(!showScienceSupplies)}
-                className={showScienceSupplies 
+                className={`text-xs sm:text-sm ${showScienceSupplies 
                   ? "bg-purple-600 text-white hover:bg-purple-700" 
                   : "text-purple-600 border-purple-200 hover:bg-purple-50"
-                }
+                }`}
               >
-                🧪 Science Supplies
+                🧪 <span className="hidden sm:inline">Science Supplies</span>
+                <span className="sm:hidden">Science</span>
               </Button>
             </div>
           </CardContent>
         </Card>
 
         {/* Results Summary */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
             <div className="text-sm text-gray-600">
               Showing <span className="font-medium">{wishlists?.length || 0}</span> teacher wishlists
             </div>
             
             {/* Active filters indicator */}
             {(showHighPriorityOnly || showAddedThisWeek || showScienceSupplies) && (
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs text-gray-500">Filters:</span>
                 {showHighPriorityOnly && (
                   <Badge variant="secondary" className="text-xs">
@@ -346,10 +354,10 @@ export default function BrowseWishlists() {
               </div>
             )}
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2">
             <span className="text-sm text-gray-500">Sort by:</span>
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-full sm:w-40">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

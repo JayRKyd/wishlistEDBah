@@ -134,38 +134,40 @@ export default function Navbar() {
                  </Button>
                </>
             ) : (
-              // Public actions - different buttons for different user types
-              <div className="flex space-x-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button>
-                      <GraduationCap className="mr-2 h-4 w-4" />
-                      I'm a Teacher
-                      <ChevronDown className="ml-2 h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/login" className="flex items-center">
-                        <GraduationCap className="mr-2 h-4 w-4" />
-                        Sign In
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/signup" className="flex items-center">
-                        <GraduationCap className="mr-2 h-4 w-4" />
-                        Sign Up
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button variant="outline" asChild>
-                  <Link href="/auth/donor-login">
-                    <Heart className="mr-2 h-4 w-4" />
-                    I Want to Help
-                  </Link>
-                </Button>
-              </div>
+                             // Public actions - different buttons for different user types
+               <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
+                 <DropdownMenu>
+                   <DropdownMenuTrigger asChild>
+                     <Button size="sm" className="sm:size-default text-xs sm:text-sm">
+                       <GraduationCap className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                       <span className="hidden sm:inline">I'm a Teacher</span>
+                       <span className="sm:hidden">Teacher</span>
+                       <ChevronDown className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+                     </Button>
+                   </DropdownMenuTrigger>
+                   <DropdownMenuContent align="end">
+                     <DropdownMenuItem asChild>
+                       <Link href="/auth/login" className="flex items-center">
+                         <GraduationCap className="mr-2 h-4 w-4" />
+                         Sign In
+                       </Link>
+                     </DropdownMenuItem>
+                     <DropdownMenuItem asChild>
+                       <Link href="/auth/signup" className="flex items-center">
+                         <GraduationCap className="mr-2 h-4 w-4" />
+                         Sign Up
+                       </Link>
+                     </DropdownMenuItem>
+                   </DropdownMenuContent>
+                 </DropdownMenu>
+                 <Button variant="outline" asChild size="sm" className="sm:size-default text-xs sm:text-sm">
+                   <Link href="/auth/donor-login">
+                     <Heart className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                     <span className="hidden sm:inline">I Want to Help</span>
+                     <span className="sm:hidden">Help</span>
+                   </Link>
+                 </Button>
+               </div>
             )}
           </div>
 

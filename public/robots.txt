@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Teacher Wishlist App
+# Sitemap: https://yourdomain.com/sitemap.xml 

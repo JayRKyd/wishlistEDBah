@@ -263,62 +263,66 @@ Best regards,
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Teacher Profile Card with Progress */}
-        <Card className="mb-8 border border-gray-200 shadow-sm">
-          <CardContent className="p-8">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-start space-x-6">
+        <Card className="mb-6 sm:mb-8 border border-gray-200 shadow-sm">
+          <CardContent className="p-4 sm:p-8">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 sm:gap-6 mb-6">
+              <div className="flex items-start space-x-4 sm:space-x-6">
                 {/* Avatar */}
-                <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <GraduationCap className="text-white h-10 w-10" />
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="text-white h-8 w-8 sm:h-10 sm:w-10" />
                 </div>
 
                 {/* Teacher Info */}
                 <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-900 mb-3">
+                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
                     {user?.first_name} {user?.last_name}
                   </h1>
                   
-                  <div className="flex items-center space-x-4 mb-4">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-3 sm:mb-4 text-xs sm:text-sm">
                     <div className="flex items-center text-gray-600">
-                      <School className="h-4 w-4 mr-2" />
-                      <span className="text-sm">{teacher?.grade}</span>
+                      <School className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      <span>{teacher?.grade}</span>
                     </div>
                     <div className="flex items-center text-gray-600">
-                      <GraduationCap className="h-4 w-4 mr-2" />
-                      <span className="text-sm">{teacher?.school}</span>
+                      <GraduationCap className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      <span>{teacher?.school}</span>
                     </div>
                     <div className="flex items-center text-pink-600">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span className="text-sm">{teacher?.location}</span>
+                      <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      <span>{teacher?.location}</span>
                     </div>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
                     {wishlist.description || wishlist.title || "I need help"}
                   </p>
                 </div>
               </div>
 
-                            {/* Action Buttons */}
-              <div className="flex space-x-3">
-                <Button variant="outline" onClick={handleShare} className="flex items-center">
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <Button variant="outline" onClick={handleShare} size="sm" className="sm:size-default">
                   <Share className="mr-2 h-4 w-4" />
-                  Share
+                  <span className="hidden sm:inline">Share</span>
+                  <span className="sm:hidden">Share</span>
                 </Button>
                 <Button 
                   onClick={handleContactTeacher}
-                  className="bg-blue-500 hover:bg-blue-600 text-white"
+                  className="bg-blue-500 hover:bg-blue-600 text-white sm:size-default"
+                  size="sm"
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  Contact Teacher
+                  <span className="hidden sm:inline">Contact Teacher</span>
+                  <span className="sm:hidden">Contact</span>
                 </Button>
                 {teacher?.amazon_wishlist_url && (
-                  <Button variant="outline" asChild>
+                  <Button variant="outline" asChild size="sm" className="sm:size-default">
                     <a href={teacher.amazon_wishlist_url} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4" />
-                      View Amazon Wishlist
+                      <span className="hidden sm:inline">View Amazon Wishlist</span>
+                      <span className="sm:hidden">Amazon</span>
                     </a>
                   </Button>
                 )}
@@ -326,19 +330,19 @@ Best regards,
             </div>
 
             {/* Progress Section */}
-            <div className="border-t pt-6">
-              <div className="flex justify-between items-center">
+            <div className="border-t pt-4 sm:pt-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Wishlist Progress</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Wishlist Progress</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
                     {progress.fulfilled} of {progress.total} items fulfilled
                   </p>
                 </div>
-                <div className="text-right">
-                  <div className="text-xl font-bold text-gray-900 mb-1">
+                <div className="text-left sm:text-right">
+                  <div className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
                     {progress.percentage}% Complete
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs sm:text-sm text-gray-500">
                     Last updated {formatDate(wishlist.updated_at)}
                   </p>
                 </div>
@@ -348,43 +352,43 @@ Best regards,
         </Card>
 
         {/* Classroom Wishlist */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Classroom Wishlist</h2>
-            <div className="flex items-center space-x-4 text-sm">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Classroom Wishlist</h2>
+            <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm">
               <div className="flex items-center">
-                <div className="w-3 h-3 bg-orange-500 rounded-full mr-2"></div>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-orange-500 rounded-full mr-1 sm:mr-2"></div>
                 <span className="text-gray-600">High Priority</span>
               </div>
               <div className="flex items-center">
-                <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full mr-1 sm:mr-2"></div>
                 <span className="text-gray-600">Fulfilled</span>
               </div>
             </div>
           </div>
 
           {/* Wishlist Items */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {sortedItems.length > 0 ? (
               sortedItems.map((item) => (
                 <Card key={item.id} className={`border border-gray-200 shadow-sm ${item.is_fulfilled ? 'bg-green-50' : 'bg-white'}`}>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                      <div className="flex items-start space-x-3 sm:space-x-4">
                         {/* Package Icon */}
-                        <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                          <Package className="h-6 w-6 text-gray-600" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Package className="h-5 w-5 sm:h-6 sm:w-6 text-gray-600" />
                         </div>
                         
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           {/* Item Name and Priority Badge */}
-                          <div className="flex items-center space-x-3 mb-2">
-                            <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900 break-words">{item.name}</h3>
                             <Badge 
                               className={
                                 item.priority === 'high' 
-                                  ? 'bg-orange-100 text-orange-700 border-orange-200' 
-                                  : 'bg-blue-100 text-blue-700 border-blue-200'
+                                  ? 'bg-orange-100 text-orange-700 border-orange-200 text-xs' 
+                                  : 'bg-blue-100 text-blue-700 border-blue-200 text-xs'
                               }
                             >
                               {item.priority === 'high' ? 'High Priority' : 'Standard Priority'}
@@ -392,39 +396,44 @@ Best regards,
                           </div>
                           
                           {item.description && (
-                            <p className="text-gray-600 mb-2">{item.description}</p>
+                            <p className="text-gray-600 mb-2 text-sm sm:text-base break-words">{item.description}</p>
                           )}
                           
                           {/* Quantity */}
-                          <div className="flex items-center text-sm text-gray-600">
-                            <Package className="h-4 w-4 mr-1" />
-                            <span>Quantity Needed: <strong>{item.quantity}</strong></span>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600">
+                            <div className="flex items-center">
+                              <Package className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                              <span>Quantity: <strong>{item.quantity}</strong></span>
+                            </div>
                             {item.estimated_cost && (
-                              <span className="ml-4">💰 Est. Cost: <strong>{item.estimated_cost}</strong></span>
+                              <div className="flex items-center">
+                                <span>💰 Est. Cost: <strong>{item.estimated_cost}</strong></span>
+                              </div>
                             )}
                           </div>
                         </div>
                       </div>
 
                       {/* Action Button */}
-                      <div className="flex space-x-3">
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                         {item.is_fulfilled ? (
-                          <Badge className="bg-green-100 text-green-700 border-green-200">
+                          <Badge className="bg-green-100 text-green-700 border-green-200 text-xs">
                             Fulfilled ✓
                           </Badge>
                         ) : userRole?.isTeacher ? (
                           // Teachers see a sharing message instead of pledge button
-                          <div className="text-center py-3 px-4 bg-blue-50 rounded-lg border border-blue-200">
-                            <p className="text-sm text-blue-700">
+                          <div className="text-center py-2 px-3 sm:py-3 sm:px-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <p className="text-xs sm:text-sm text-blue-700">
                               Share this wishlist with potential donors in your community
                             </p>
                           </div>
                         ) : (
                           // Non-teachers and non-authenticated users see pledge button
                           <Button 
-                            className="bg-primary hover:bg-blue-700 text-white"
+                            className="bg-primary hover:bg-blue-700 text-white sm:size-default"
                             onClick={() => handlePledgeClick(item, `${user?.first_name} ${user?.last_name}`)}
                             disabled={roleLoading}
+                            size="sm"
                           >
                             {roleLoading ? (
                               <>
@@ -434,16 +443,18 @@ Best regards,
                             ) : (
                               <>
                                 <Heart className="mr-2 h-4 w-4" />
-                                Pledge to Donate
+                                <span className="hidden sm:inline">Pledge to Donate</span>
+                                <span className="sm:hidden">Pledge</span>
                               </>
                             )}
                           </Button>
                         )}
                         
                         {!item.is_fulfilled && item.purchase_link && (
-                          <Button variant="outline">
+                          <Button variant="outline" size="sm" className="sm:size-default">
                             <ExternalLink className="mr-2 h-4 w-4" />
-                            View Online
+                            <span className="hidden sm:inline">View Online</span>
+                            <span className="sm:hidden">View</span>
                           </Button>
                         )}
                       </div>

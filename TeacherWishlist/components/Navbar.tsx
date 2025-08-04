@@ -102,31 +102,31 @@ export default function Navbar() {
              )}
            </nav>
 
-          {/* User Actions */}
-          <div className="flex items-center space-x-4">
-            {userRole?.isAuthenticated ? (
-              // Authenticated user actions
-              <>
-                <span className="text-sm text-gray-600 hidden sm:block">
-                  Welcome, {displayName} 
-                  {userRole.isDonor && <Heart className="inline-block ml-1 h-3 w-3 text-red-500" />}
-                  {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
-                  {userRole.isAdmin && <GraduationCap className="inline-block ml-1 h-3 w-3 text-purple-500" />}
-                </span>
-                <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut}>
-                  {isLoggingOut ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2" />
-                      Logging out...
-                    </>
-                  ) : (
-                    <>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </>
-                  )}
-                </Button>
-              </>
+                     {/* User Actions */}
+           <div className="flex items-center space-x-4">
+             {userRole?.isAuthenticated ? (
+               // Authenticated user actions
+               <>
+                 <span className="text-sm text-gray-600 hidden sm:block">
+                   Welcome, {displayName} 
+                   {userRole.isDonor && <Heart className="inline-block ml-1 h-3 w-3 text-red-500" />}
+                   {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
+                   {userRole.isAdmin && <GraduationCap className="inline-block ml-1 h-3 w-3 text-purple-500" />}
+                 </span>
+                 <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut} className="hidden sm:flex">
+                   {isLoggingOut ? (
+                     <>
+                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2" />
+                       Logging out...
+                     </>
+                   ) : (
+                     <>
+                       <LogOut className="mr-2 h-4 w-4" />
+                       Logout
+                     </>
+                   )}
+                 </Button>
+               </>
             ) : (
               // Public actions - different buttons for different user types
               <div className="flex space-x-2">

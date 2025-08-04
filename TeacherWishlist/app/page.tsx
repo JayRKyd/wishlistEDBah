@@ -22,6 +22,8 @@ function HomePageContent() {
             type: 'signup'
           })
           
+          console.log('Verification result:', { data, error })
+          
           if (!error && data.user) {
             console.log('Email verification successful')
             
@@ -104,8 +106,74 @@ function HomePageContent() {
             }
           } else {
             console.error('Verification error:', error)
-            // Redirect to login with error
-            router.push('/auth/login?error=verification_failed')
+            
+            // Check if user is already authenticated despite verification error
+            const { data: { user: existingUser } } = await supabase.auth.getUser()
+            
+            if (existingUser) {
+              console.log('User is already authenticated, checking role...')
+              
+              try {
+                // Check user role and redirect accordingly
+                const { data: userProfile, error: profileError } = await supabase
+                  .from('users')
+                  .select('role')
+                  .eq('id', existingUser.id)
+                  .single()
+
+                if (profileError) {
+                  console.error('Profile fetch error:', profileError)
+                  router.push('/auth/login?error=profile_not_found')
+                  return
+                }
+
+                console.log('User profile:', userProfile)
+                console.log('User role:', userProfile?.role)
+                
+                if (userProfile?.role === 'donor') {
+                  console.log('Redirecting donor to /donor/dashboard')
+                  router.push('/donor/dashboard')
+                  return
+                } else if (userProfile?.role === 'teacher') {
+                  // Check if teacher profile exists
+                  const { data: teacher, error: teacherError } = await supabase
+                    .from('teachers')
+                    .select('is_teacher_verified')
+                    .eq('user_id', existingUser.id)
+                    .single()
+
+                  if (teacherError && teacherError.code !== 'PGRST116') {
+                    console.error('Teacher profile fetch error:', teacherError)
+                    router.push('/dashboard')
+                    return
+                  }
+
+                  if (!teacher) {
+                    router.push('/dashboard')
+                    return
+                  } else if (teacher.is_teacher_verified) {
+                    router.push('/dashboard')
+                    return
+                  } else {
+                    router.push('/pending-verification')
+                    return
+                  }
+                } else if (userProfile?.role === 'admin') {
+                  router.push('/admin/verification')
+                  return
+                } else {
+                  router.push('/auth/login?error=unknown_role')
+                  return
+                }
+              } catch (error) {
+                console.error('Role detection error:', error)
+                router.push('/auth/login?error=verification_failed')
+                return
+              }
+            } else {
+              // No user found, redirect to login with error
+              router.push('/auth/login?error=verification_failed')
+            }
           }
         } catch (error) {
           console.error('Verification failed:', error)

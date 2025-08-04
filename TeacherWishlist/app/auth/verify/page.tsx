@@ -24,28 +24,32 @@ function VerifyPageContent() {
        
        console.log('Verification params:', { token, type, code })
        
-       // If this is a recovery (password reset) link, redirect to reset password page
-       if (type === 'recovery') {
-         console.log('Detected recovery link, redirecting to reset password page')
-         // For recovery links, we need to exchange the token for a session first
-         try {
-           const { error } = await supabase.auth.exchangeCodeForSession(token || '')
-           if (error) {
-             console.log('Failed to exchange recovery token:', error.message)
-             setStatus('error')
-             setMessage('Invalid or expired password reset link. Please request a new one.')
-             return
-           }
-           // Successfully exchanged, now redirect to reset password page
-           router.push('/auth/reset-password')
-           return
-         } catch (error) {
-           console.error('Error exchanging recovery token:', error)
-           setStatus('error')
-           setMessage('Invalid or expired password reset link. Please request a new one.')
-           return
-         }
-       }
+               // If this is a recovery (password reset) link, redirect to reset password page
+        if (type === 'recovery') {
+          console.log('Detected recovery link, redirecting to reset password page')
+          // For recovery links, we need to exchange the token for a session first
+          try {
+            const { data, error } = await supabase.auth.exchangeCodeForSession(token || '')
+            if (error) {
+              console.log('Failed to exchange recovery token:', error.message)
+              setStatus('error')
+              setMessage('Invalid or expired password reset link. Please request a new one.')
+              return
+            }
+            // Successfully exchanged, now redirect to reset password page with tokens
+            if (data.session) {
+              router.push(`/auth/reset-password?access_token=${data.session.access_token}&refresh_token=${data.session.refresh_token}`)
+            } else {
+              router.push('/auth/reset-password')
+            }
+            return
+          } catch (error) {
+            console.error('Error exchanging recovery token:', error)
+            setStatus('error')
+            setMessage('Invalid or expired password reset link. Please request a new one.')
+            return
+          }
+        }
        
        if (code) {
          // This could be a password reset or email verification code

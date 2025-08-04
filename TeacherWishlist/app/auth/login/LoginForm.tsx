@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -18,6 +18,39 @@ export default function LoginForm() {
   const router = useRouter()
   const supabase = createClient()
   const { toast } = useToast()
+
+  // Check for error parameters in URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const error = urlParams.get('error')
+    
+    if (error) {
+      let errorMessage = 'An error occurred during verification.'
+      
+      switch (error) {
+        case 'profile_not_found':
+          errorMessage = 'Your profile was not found. Please contact support.'
+          break
+        case 'unknown_role':
+          errorMessage = 'Your account role could not be determined. Please contact support.'
+          break
+        case 'user_not_found':
+          errorMessage = 'Your account was not found. Please try signing up again.'
+          break
+        case 'verification_failed':
+          errorMessage = 'Email verification failed. Please try again or contact support.'
+          break
+        default:
+          errorMessage = 'An error occurred. Please try again.'
+      }
+      
+      toast({
+        title: "Verification Error",
+        description: errorMessage,
+        variant: "destructive",
+      })
+    }
+  }, [toast])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()

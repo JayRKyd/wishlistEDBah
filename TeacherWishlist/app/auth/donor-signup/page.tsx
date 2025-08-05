@@ -95,7 +95,6 @@ export default function DonorSignUpPage() {
         }
       }
     } catch (error: any) {
-      console.error('Signup error:', error);
       toast({
         title: "Signup Failed",
         description: error.message || "Failed to create account. Please try again.",

@@ -253,8 +253,8 @@ export default function LandingPage() {
                     <span className="text-xs sm:text-sm font-semibold">3</span>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Coordinate Delivery</h4>
-                    <p className="text-gray-600 text-xs sm:text-sm">Contact the teacher to arrange donation drop-off</p>
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Complete Transfer</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Transfer funds to teacher's bank account or purchase from their Amazon wishlist</p>
                   </div>
                 </div>
               </div>

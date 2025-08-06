@@ -133,7 +133,7 @@ export default function DonorAuthModal({
           {/* Footer */}
           <div className="text-center pt-4 border-t border-gray-200">
             <p className="text-xs text-gray-500">
-              Creating an account takes less than 30 seconds!
+              Creating an account takes less than 30 seconds
             </p>
             <p className="text-xs text-gray-400 mt-1">
               Join the community of donors supporting Bahamian education!

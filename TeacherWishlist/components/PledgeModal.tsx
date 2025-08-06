@@ -176,9 +176,7 @@ export default function PledgeModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader className="text-center">
-          <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-            <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-          </div>
+
           <DialogTitle className="text-lg sm:text-xl font-bold text-gray-900">
             Make a Pledge
           </DialogTitle>
@@ -373,7 +371,7 @@ export default function PledgeModal({
             <Card>
               <CardContent className="p-4 sm:p-6">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center">
-                  <Heart className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  
                   Confirm Your Pledge
                 </h3>
                 

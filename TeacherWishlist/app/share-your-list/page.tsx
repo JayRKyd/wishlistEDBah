@@ -50,7 +50,7 @@ export default function ShareYourListPage() {
                   <div className="space-y-4 text-gray-700">
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex items-start">
-                        <CheckCircle className="text-blue-600 mr-2 mt-1 flex-shrink-0" />
+                        <span className="text-primary text-3xl mr-4 mt-1"></span>
                         <div>
                           <h3 className="font-semibold text-blue-900 mb-2">Automatic Share Link</h3>
                           <p className="text-blue-800">

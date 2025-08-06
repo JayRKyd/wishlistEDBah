@@ -47,15 +47,15 @@ export default function DonationGuidelinesPage() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-3">Safety & Security</h2>
                   <div className="space-y-3 text-gray-700">
                     <div className="flex items-start">
-                      <span className="text-primary text-3xl mr-4 mt-1"></span>
+                      <CheckCircle className="text-green-600 h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
                       <span><strong>No money exchanges hands</strong> - We never handle payments. All donations are direct item donations.</span>
                     </div>
                     <div className="flex items-start">
-                      <span className="text-primary text-3xl mr-4 mt-1"></span>
+                      <CheckCircle className="text-green-600 h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
                       <span><strong>Verify teacher status</strong> - All teachers are verified through their schools before being approved.</span>
                     </div>
                                          <div className="flex items-start">
-                       <span className="text-primary text-3xl mr-4 mt-1"></span>
+                       <CheckCircle className="text-green-600 h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
                        <span><strong>Teacher consent</strong> - Teachers provide their bank information with full consent for donations.</span>
                      </div>
                   </div>
@@ -106,8 +106,8 @@ export default function DonationGuidelinesPage() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-3">How to Donate</h2>
                   <div className="space-y-4">
                     <div className="flex items-start">
-                      <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                        <span className="text-base font-bold">1</span>
+                      <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
+                        <span className="text-sm font-semibold">1</span>
                       </div>
                       <div>
                         <h4 className="font-medium text-gray-900">Browse Wishlists</h4>
@@ -115,32 +115,32 @@ export default function DonationGuidelinesPage() {
                       </div>
                     </div>
                     <div className="flex items-start">
-                      <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                        <span className="text-base font-bold">2</span>
+                      <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
+                        <span className="text-sm font-semibold">2</span>
                       </div>
                       <div>
                         <h4 className="font-medium text-gray-900">Pledge Items</h4>
                         <p className="text-gray-600">Commit to donating specific items - this helps prevent duplicate donations</p>
                       </div>
                     </div>
-                    <div className="flex items-start">
-                      <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                        <span className="text-base font-bold">3</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-900">Choose Donation Method</h4>
-                        <p className="text-gray-600">View teacher's bank info or Amazon wishlist link</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                        <span className="text-base font-bold">4</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-900">Complete Donation</h4>
-                        <p className="text-gray-600">Make transfer through your bank app, then mark as completed</p>
-                      </div>
-                    </div>
+                                         <div className="flex items-start">
+                       <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
+                         <span className="text-sm font-semibold">3</span>
+                       </div>
+                       <div>
+                         <h4 className="font-medium text-gray-900">Choose Donation Method</h4>
+                         <p className="text-gray-600">View teacher's bank info or Amazon wishlist link</p>
+                       </div>
+                     </div>
+                     <div className="flex items-start">
+                       <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
+                         <span className="text-sm font-semibold">4</span>
+                       </div>
+                       <div>
+                         <h4 className="font-medium text-gray-900">Complete Donation</h4>
+                         <p className="text-gray-600">Make transfer through your bank app, then mark as completed</p>
+                       </div>
+                     </div>
                   </div>
                 </div>
               </div>

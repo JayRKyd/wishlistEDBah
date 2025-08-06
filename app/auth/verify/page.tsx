@@ -17,21 +17,134 @@ function VerifyPageContent() {
 
   useEffect(() => {
     const handleVerification = async () => {
-      const token_hash = searchParams.get('token_hash')
-      const type = searchParams.get('type')
-      
-      if (!token_hash || !type) {
-        setStatus('error')
-        setMessage('Invalid verification link')
-        return
-      }
+             // Handle both formats: token+type (email verification/password reset) and code (password reset)
+       const token = searchParams.get('token')
+       const type = searchParams.get('type')
+       const code = searchParams.get('code')
+       
+       console.log('Verification params:', { token, type, code })
+       
+               // If this is a recovery (password reset) link, redirect to reset password page
+        if (type === 'recovery') {
+          console.log('Detected recovery link, redirecting to reset password page')
+          // For recovery links, we need to exchange the token for a session first
+          try {
+            const { data, error } = await supabase.auth.exchangeCodeForSession(token || '')
+            if (error) {
+              console.log('Failed to exchange recovery token:', error.message)
+              setStatus('error')
+              setMessage('Invalid or expired password reset link. Please request a new one.')
+              return
+            }
+                         // Successfully exchanged, now redirect to reset password page with tokens
+             if (data.session) {
+               console.log('Session obtained, redirecting with tokens');
+               router.push(`/auth/reset-password?access_token=${data.session.access_token}&refresh_token=${data.session.refresh_token}`)
+             } else {
+               console.log('No session in response, redirecting without tokens');
+               router.push('/auth/reset-password')
+             }
+            return
+          } catch (error) {
+            console.error('Error exchanging recovery token:', error)
+            setStatus('error')
+            setMessage('Invalid or expired password reset link. Please request a new one.')
+            return
+          }
+        }
+       
+       if (code) {
+         // This could be a password reset or email verification code
+         // For password reset, we need to use exchangeCodeForSession
+         try {
+           console.log('Attempting to exchange code for session:', code)
+           const { error } = await supabase.auth.exchangeCodeForSession(code)
 
-      try {
-        // Verify the OTP
-        const { error } = await supabase.auth.verifyOtp({
-          type: type as any,
-          token_hash,
-        })
+           if (error) {
+             console.log('Code exchange failed:', error.message)
+             // If exchange fails, try as OTP verification
+             console.log('Trying as OTP verification...')
+             const { error: otpError } = await supabase.auth.verifyOtp({
+               token_hash: code,
+               type: 'signup'
+             })
+
+             if (otpError) {
+               console.log('OTP verification also failed:', otpError.message)
+               // Try as recovery OTP
+               const { error: recoveryError } = await supabase.auth.verifyOtp({
+                 token_hash: code,
+                 type: 'recovery'
+               })
+
+               if (recoveryError) {
+                 console.log('Recovery verification also failed:', recoveryError.message)
+                 setStatus('error')
+                 setMessage('Invalid or expired verification link. Please request a new one.')
+                 return
+               }
+             }
+           }
+
+          // Success! Now handle the user redirect
+          const { data: { user } } = await supabase.auth.getUser()
+          
+          if (!user) {
+            setStatus('error')
+            setMessage('User not found')
+            return
+          }
+
+          // Check user role and redirect accordingly
+          const { data: userProfile } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+          if (userProfile?.role === 'teacher') {
+            const { data: teacher } = await supabase
+              .from('teachers')
+              .select('is_teacher_verified')
+              .eq('user_id', user.id)
+              .single()
+
+            if (!teacher) {
+              router.push('/dashboard')
+            } else if (teacher.is_teacher_verified) {
+              router.push('/dashboard')
+            } else {
+              router.push('/pending-verification')
+            }
+          } else if (userProfile?.role === 'donor') {
+            router.push('/donor/dashboard')
+          } else {
+            router.push('/dashboard')
+          }
+
+          setStatus('success')
+          setMessage('Email verified successfully!')
+          return
+        } catch (error) {
+          console.error('Verification error:', error)
+          setStatus('error')
+          setMessage('Verification failed. Please try again.')
+          return
+        }
+      }
+      
+             if (!token || !type) {
+         setStatus('error')
+         setMessage('Invalid verification link')
+         return
+       }
+
+       try {
+         // Verify the OTP
+         const { error } = await supabase.auth.verifyOtp({
+           type: type as any,
+           token_hash: token,
+         })
 
         if (error) {
           setStatus('error')
@@ -135,6 +248,11 @@ function VerifyPageContent() {
               <Button asChild className="w-full">
                 <Link href="/auth/login">
                   Go to Login
+                </Link>
+              </Button>
+              <Button variant="outline" asChild className="w-full">
+                <Link href="/auth/forgot-password">
+                  Request New Link
                 </Link>
               </Button>
               <Button variant="outline" asChild className="w-full">

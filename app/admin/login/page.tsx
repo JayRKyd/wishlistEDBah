@@ -106,6 +106,14 @@ export default function AdminLoginPage() {
                 placeholder="Enter your password"
                 required
               />
+              <div className="text-right">
+                <Link 
+                  href="/auth/forgot-password" 
+                  className="text-sm text-primary hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             <Button 

@@ -166,6 +166,32 @@ export default function TeacherDashboard() {
     },
   });
 
+  // Delete wishlist mutation
+  const deleteWishlistMutation = useMutation({
+    mutationFn: async (wishlistId: number) => {
+      const { error } = await supabase
+        .from('wishlists')
+        .delete()
+        .eq('id', wishlistId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Wishlist Deleted",
+        description: "The wishlist has been successfully deleted.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['teacher-wishlists'] });
+      queryClient.invalidateQueries({ queryKey: ['teacher-stats'] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to delete wishlist",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Auth check
   useEffect(() => {
     if (!userLoading && !user) {
@@ -190,6 +216,12 @@ export default function TeacherDashboard() {
   const handleDeleteItem = (itemId: number) => {
     if (confirm("Are you sure you want to delete this item?\n\nThis action cannot be undone.")) {
       deleteItemMutation.mutate(itemId);
+    }
+  };
+
+  const handleDeleteWishlist = (wishlistId: number, wishlistTitle: string) => {
+    if (confirm(`Are you sure you want to delete "${wishlistTitle}"?\n\nThis will permanently delete the wishlist and all its items. This action cannot be undone.`)) {
+      deleteWishlistMutation.mutate(wishlistId);
     }
   };
 
@@ -251,7 +283,6 @@ export default function TeacherDashboard() {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                    {teacher && <NotificationBell teacherId={teacher.id} />}
                     <Button variant="outline" onClick={() => setShowProfileForm(true)} size="sm" className="sm:size-default">
                       <Edit className="mr-2 h-4 w-4" />
                       <span className="hidden sm:inline">Edit Profile</span>
@@ -326,14 +357,62 @@ export default function TeacherDashboard() {
             {Array.isArray(wishlists) && wishlists.map((wishlist: any) => (
               <Card key={wishlist.id}>
                 <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <CardTitle>{wishlist.title || "My Classroom Wishlist"}</CardTitle>
-                    <div className="flex items-center space-x-4">
-                      <Button variant="outline" size="sm">
-                        <Share className="mr-2 h-4 w-4" />
-                        Share
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                    <CardTitle className="text-lg sm:text-xl">{wishlist.title || "My Classroom Wishlist"}</CardTitle>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={async () => {
+                          const shareUrl = `${window.location.origin}/wishlist/${wishlist.share_token}`;
+                          if (navigator.share) {
+                            try {
+                              await navigator.share({
+                                title: `${userProfile?.first_name}'s Classroom Wishlist`,
+                                text: `Help support ${userProfile?.first_name} ${userProfile?.last_name}'s classroom!`,
+                                url: shareUrl,
+                              });
+                            } catch (error) {
+                              // Fallback to clipboard
+                              navigator.clipboard.writeText(shareUrl);
+                              toast({
+                                title: "Link copied!",
+                                description: "Your wishlist link has been copied to clipboard.",
+                              });
+                            }
+                          } else {
+                            // Fallback to clipboard
+                            navigator.clipboard.writeText(shareUrl);
+                            toast({
+                              title: "Link copied!",
+                              description: "Your wishlist link has been copied to clipboard.",
+                            });
+                          }
+                        }}
+                        className="flex items-center gap-2"
+                      >
+                        <Share className="h-4 w-4" />
+                        Share Wishlist
                       </Button>
-                      <span className="text-sm text-gray-500">Share Code: {wishlist.share_token}</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDeleteWishlist(wishlist.id, wishlist.title || "My Classroom Wishlist")}
+                        disabled={deleteWishlistMutation.isPending}
+                        className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 hover:border-red-300"
+                      >
+                        {deleteWishlistMutation.isPending ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600" />
+                            Deleting...
+                          </>
+                        ) : (
+                          <>
+                            <Trash2 className="h-4 w-4" />
+                            Delete Wishlist
+                          </>
+                        )}
+                      </Button>
                     </div>
                   </div>
                 </CardHeader>
@@ -457,28 +536,28 @@ function WishlistItems({
       {items.map((item: any) => (
         <div
           key={item.id}
-          className={`p-4 border rounded-lg transition-all ${
+          className={`p-3 sm:p-4 border rounded-lg transition-all ${
             item.is_fulfilled 
               ? 'bg-gray-50 border-gray-200 opacity-75' 
               : 'bg-white border-gray-200'
           }`}
         >
-          <div className="flex items-center gap-4">
-            <div className="flex items-center">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <input 
                 type="checkbox" 
                 checked={item.is_fulfilled}
                 readOnly
                 className="rounded border-gray-300 text-green-600 focus:ring-green-500" 
               />
-              <div className="ml-3 w-8 h-8 bg-gray-200 rounded flex items-center justify-center text-gray-500 cursor-grab">
-                <GripVertical className="h-4 w-4" />
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 rounded flex items-center justify-center text-gray-500 cursor-grab">
+                <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
               </div>
             </div>
             
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h3 className={`font-semibold ${
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                <h3 className={`font-semibold text-sm sm:text-base break-words ${
                   item.is_fulfilled 
                     ? 'text-gray-500 line-through' 
                     : 'text-gray-900'
@@ -497,13 +576,13 @@ function WishlistItems({
                 )}
                 {item.is_fulfilled && (
                   <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                    ✅ Completed
+                    Completed
                   </span>
                 )}
               </div>
               
               {item.description && (
-                <p className={`text-sm mb-3 ${
+                <p className={`text-xs sm:text-sm mb-2 sm:mb-3 break-words ${
                   item.is_fulfilled 
                     ? 'text-gray-400 line-through' 
                     : 'text-gray-600'
@@ -512,17 +591,17 @@ function WishlistItems({
                 </p>
               )}
               
-              <div className={`flex items-center gap-4 text-sm ${
+              <div className={`flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm ${
                 item.is_fulfilled ? 'text-gray-400' : 'text-gray-500'
               }`}>
                 <span>Need: <strong>{item.quantity}</strong></span>
                 <span>Pledged: <strong>{item.pledges?.reduce((sum: number, pledge: any) => sum + pledge.quantity, 0) || 0}</strong></span>
                 <span>Remaining: <strong>{Math.max(0, item.quantity - (item.pledges?.reduce((sum: number, pledge: any) => sum + pledge.quantity, 0) || 0))}</strong></span>
-                {item.estimated_cost && <span>Est. Cost: <strong>{item.estimated_cost}</strong></span>}
+                {item.estimated_cost && <span>Est. Cost: <strong>${item.estimated_cost}</strong></span>}
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -535,7 +614,7 @@ function WishlistItems({
                 }`}
                 title={item.is_fulfilled ? 'Mark as not fulfilled' : 'Mark as fulfilled'}
               >
-                <Check className={`h-4 w-4 ${item.is_fulfilled ? 'font-bold' : ''}`} />
+                <Check className={`h-3 w-3 sm:h-4 sm:w-4 ${item.is_fulfilled ? 'font-bold' : ''}`} />
               </Button>
               <Button
                 variant="ghost"
@@ -549,7 +628,7 @@ function WishlistItems({
                 } hover:bg-red-50`}
                 title="Delete item"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </div>
           </div>

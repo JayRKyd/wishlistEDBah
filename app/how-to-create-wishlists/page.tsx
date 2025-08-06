@@ -98,7 +98,9 @@ export default function HowToCreateWishlistsPage() {
                   <div className="space-y-4 text-gray-700">
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex items-start">
-                        <Lightbulb className="text-blue-600 mr-2 mt-1 flex-shrink-0" />
+                        <span className="text-primary text-3xl mr-4 mt-1">
+                          
+                        </span>
                         <div>
                           <h3 className="font-semibold text-blue-900 mb-2">Access Your Dashboard</h3>
                           <p className="text-blue-800">
@@ -165,7 +167,9 @@ export default function HowToCreateWishlistsPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-3">Optional Fields</h3>
+                     <span className="text-primary text-3xl mr-4 mt-1">
+                          
+                        </span>
                       <div className="space-y-3">
                         <div className="flex items-start">
                           <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
@@ -277,7 +281,9 @@ export default function HowToCreateWishlistsPage() {
 
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                       <div className="flex items-start">
-                        <Check className="text-green-600 mr-2 mt-1 flex-shrink-0" />
+                        <span className="text-primary text-3xl mr-4 mt-1">
+                          
+                        </span>
                         <div>
                           <h3 className="font-semibold text-green-900 mb-2">Sharing Your Wishlist</h3>
                           <p className="text-green-800">
@@ -321,7 +327,9 @@ export default function HowToCreateWishlistsPage() {
 
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex items-start">
-                        <LinkIcon className="text-blue-600 mr-2 mt-1 flex-shrink-0" />
+                        <span className="text-primary text-3xl mr-4 mt-1">
+                          
+                        </span>
                         <div>
                           <h3 className="font-semibold text-blue-900 mb-2">Stay Connected</h3>
                           <p className="text-blue-800">

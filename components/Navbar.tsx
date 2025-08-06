@@ -44,13 +44,23 @@ export default function Navbar() {
 
   return (
     <header className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <GraduationCap className="text-primary text-2xl mr-2" />
-            <h1 className="text-xl font-bold text-gray-900">WishListED Bahamas</h1>
-          </Link>
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+        {/* Desktop Layout */}
+        <div className="hidden md:flex justify-between items-center h-16 gap-1 sm:gap-2">
+                     {/* Logo */}
+           {userRole?.isAuthenticated ? (
+             // Non-clickable logo for authenticated users
+             <div className="flex items-center min-w-0 flex-shrink-0">
+               <GraduationCap className="text-primary text-lg sm:text-xl lg:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
+               <h1 className="text-xs sm:text-sm lg:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+             </div>
+           ) : (
+             // Clickable logo for public users
+             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity min-w-0 flex-shrink-0">
+               <GraduationCap className="text-primary text-lg sm:text-xl lg:text-2xl mr-1 sm:mr-2 flex-shrink-0" />
+               <h1 className="text-xs sm:text-sm lg:text-xl font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+             </Link>
+           )}
           
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex space-x-8">
@@ -69,21 +79,18 @@ export default function Navbar() {
                      </Link>
                    </>
                  )}
-                 {userRole.isDonor && (
-                   <>
-                     <Link href="/donor/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                       <Heart className="inline-block mr-1 h-4 w-4" />
-                       My Donations
-                     </Link>
-                     <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                       <Gift className="inline-block mr-1 h-4 w-4" />
-                       Browse Wishlists
-                     </Link>
-                     <Link href="/" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                       Home
-                     </Link>
-                   </>
-                 )}
+                                   {userRole.isDonor && (
+                    <>
+                      <Link href="/donor/dashboard" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                        <Heart className="inline-block mr-1 h-4 w-4" />
+                        My Donations
+                      </Link>
+                      <Link href="/browse" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                        <Gift className="inline-block mr-1 h-4 w-4" />
+                        Browse Wishlists
+                      </Link>
+                    </>
+                  )}
                  {/* Admin users get no navigation links - they only manage verification */}
                </>
              ) : (
@@ -103,7 +110,7 @@ export default function Navbar() {
            </nav>
 
                      {/* User Actions */}
-           <div className="flex items-center space-x-4">
+           <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
              {userRole?.isAuthenticated ? (
                // Authenticated user actions
                <>
@@ -113,7 +120,7 @@ export default function Navbar() {
                    {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
                    {userRole.isAdmin && <GraduationCap className="inline-block ml-1 h-3 w-3 text-purple-500" />}
                  </span>
-                 <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut} className="hidden sm:flex">
+                 <Button variant="outline" onClick={handleLogout} size="sm" disabled={isLoggingOut} className="hidden sm:inline-flex">
                    {isLoggingOut ? (
                      <>
                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2" />
@@ -127,40 +134,53 @@ export default function Navbar() {
                    )}
                  </Button>
                </>
-            ) : (
-              // Public actions - different buttons for different user types
-              <div className="flex space-x-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button>
-                      <GraduationCap className="mr-2 h-4 w-4" />
-                      I'm a Teacher
-                      <ChevronDown className="ml-2 h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/login" className="flex items-center">
-                        <GraduationCap className="mr-2 h-4 w-4" />
-                        Sign In
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/signup" className="flex items-center">
-                        <GraduationCap className="mr-2 h-4 w-4" />
-                        Sign Up
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button variant="outline" asChild>
-                  <Link href="/auth/donor-login">
-                    <Heart className="mr-2 h-4 w-4" />
-                    I Want to Help
-                  </Link>
-                </Button>
-              </div>
-            )}
+                                      ) : (
+               // Public actions - buttons on desktop, hamburger on mobile
+               <>
+                 {/* Desktop - Buttons */}
+                 <div className="hidden md:flex items-center space-x-4">
+                   <Button 
+                     onClick={() => window.location.href = '/auth/login'}
+                     className="bg-primary text-white hover:bg-blue-700"
+                   >
+                     <GraduationCap className="mr-2 h-4 w-4" />
+                     I'm a Teacher
+                   </Button>
+                   <Button 
+                     variant="outline"
+                     onClick={() => window.location.href = '/auth/donor-login'}
+                   >
+                     <Heart className="mr-2 h-4 w-4" />
+                     I Want to Help
+                   </Button>
+                 </div>
+                 
+                 {/* Mobile - Hamburger Menu */}
+                 <div className="md:hidden">
+                   <DropdownMenu>
+                     <DropdownMenuTrigger asChild>
+                       <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                         <Menu className="h-4 w-4" />
+                       </Button>
+                     </DropdownMenuTrigger>
+                     <DropdownMenuContent align="end" className="w-48">
+                       <DropdownMenuItem asChild>
+                         <Link href="/auth/login" className="flex items-center">
+                           <GraduationCap className="mr-2 h-4 w-4" />
+                           I'm a Teacher
+                         </Link>
+                       </DropdownMenuItem>
+                       <DropdownMenuItem asChild>
+                         <Link href="/auth/donor-login" className="flex items-center">
+                           <Heart className="mr-2 h-4 w-4" />
+                           I Want to Help
+                         </Link>
+                       </DropdownMenuItem>
+                     </DropdownMenuContent>
+                   </DropdownMenu>
+                 </div>
+               </>
+             )}
           </div>
 
           {/* Mobile Menu */}
@@ -188,28 +208,22 @@ export default function Navbar() {
                     </DropdownMenuItem>
                   </>
                 )}
-                {userRole.isDonor && (
-                  <>
-                    <DropdownMenuItem asChild>
-                      <Link href="/donor/dashboard" className="flex items-center">
-                        <Heart className="mr-2 h-4 w-4 text-red-500" />
-                        My Donations
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/browse" className="flex items-center">
-                        <Gift className="mr-2 h-4 w-4 text-primary" />
-                        Browse Wishlists
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/" className="flex items-center">
-                        <GraduationCap className="mr-2 h-4 w-4 text-primary" />
-                        Home
-                      </Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
+                                 {userRole.isDonor && (
+                   <>
+                     <DropdownMenuItem asChild>
+                       <Link href="/donor/dashboard" className="flex items-center">
+                         <Heart className="mr-2 h-4 w-4 text-red-500" />
+                         My Donations
+                       </Link>
+                     </DropdownMenuItem>
+                     <DropdownMenuItem asChild>
+                       <Link href="/browse" className="flex items-center">
+                         <Gift className="mr-2 h-4 w-4 text-primary" />
+                         Browse Wishlists
+                       </Link>
+                     </DropdownMenuItem>
+                   </>
+                 )}
                 {userRole.isAdmin && (
                   <DropdownMenuItem asChild>
                     <Link href="/admin/verification" className="flex items-center">
@@ -229,6 +243,124 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+        </div>
+
+        {/* Mobile Layout */}
+        <div className="md:hidden">
+          {/* Mobile Header Row */}
+          <div className="flex justify-between items-center h-16 gap-2">
+            {/* Logo */}
+            {userRole?.isAuthenticated ? (
+              // Non-clickable logo for authenticated users
+              <div className="flex items-center min-w-0 flex-shrink-0">
+                <GraduationCap className="text-primary text-lg mr-1 flex-shrink-0" />
+                <h1 className="text-sm font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+              </div>
+            ) : (
+              // Clickable logo for public users
+              <Link href="/" className="flex items-center hover:opacity-80 transition-opacity min-w-0 flex-shrink-0">
+                <GraduationCap className="text-primary text-lg mr-1 flex-shrink-0" />
+                <h1 className="text-sm font-bold text-gray-900 truncate">WishListED Bahamas</h1>
+              </Link>
+            )}
+
+            {/* Mobile Actions */}
+            <div className="flex items-center gap-2">
+              {userRole?.isAuthenticated ? (
+                // Authenticated user mobile actions
+                <>
+                  <span className="text-xs text-gray-600">
+                    {displayName}
+                    {userRole.isDonor && <Heart className="inline-block ml-1 h-3 w-3 text-red-500" />}
+                    {userRole.isTeacher && <GraduationCap className="inline-block ml-1 h-3 w-3 text-primary" />}
+                    {userRole.isAdmin && <GraduationCap className="inline-block ml-1 h-3 w-3 text-purple-500" />}
+                  </span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Menu className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      {userRole.isTeacher && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link href="/dashboard" className="flex items-center">
+                              <LayoutDashboard className="mr-2 h-4 w-4 text-primary" />
+                              Dashboard
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href="/browse" className="flex items-center">
+                              <Gift className="mr-2 h-4 w-4 text-primary" />
+                              Browse Wishlists
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                      {userRole.isDonor && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link href="/donor/dashboard" className="flex items-center">
+                              <Heart className="mr-2 h-4 w-4 text-red-500" />
+                              My Donations
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href="/browse" className="flex items-center">
+                              <Gift className="mr-2 h-4 w-4 text-primary" />
+                              Browse Wishlists
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                      {userRole.isAdmin && (
+                        <DropdownMenuItem asChild>
+                          <Link href="/admin/verification" className="flex items-center">
+                            <GraduationCap className="mr-2 h-4 w-4 text-purple-500" />
+                            Admin Panel
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem 
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="text-red-600 focus:text-red-600"
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        {isLoggingOut ? "Logging out..." : "Logout"}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+                             ) : (
+                 // Public user mobile actions - hamburger menu
+                 <DropdownMenu>
+                   <DropdownMenuTrigger asChild>
+                     <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                       <Menu className="h-4 w-4" />
+                     </Button>
+                   </DropdownMenuTrigger>
+                                       <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem asChild>
+                        <Link href="/auth/login" className="flex items-center">
+                          <GraduationCap className="mr-2 h-4 w-4" />
+                          I'm a Teacher
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/auth/donor-login" className="flex items-center">
+                          <Heart className="mr-2 h-4 w-4" />
+                          I Want to Help
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                 </DropdownMenu>
+               )}
+            </div>
+          </div>
+
+          
         </div>
       </div>
     </header>

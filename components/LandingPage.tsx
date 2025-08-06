@@ -3,10 +3,16 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap, Heart, Search, Plus, Users, CheckCircle, Clock } from "lucide-react";
+import { GraduationCap, Heart, Search, Plus, Users, CheckCircle, Clock, Menu } from "lucide-react";
 import ActivityFeed from "@/components/ActivityFeed";
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function LandingPage() {
   const supabase = createClient();
@@ -74,20 +80,48 @@ export default function LandingPage() {
             </nav>
 
             <div className="flex items-center space-x-4">
-              <Button 
-                onClick={() => window.location.href = '/auth/login'}
-                className="bg-primary text-white hover:bg-blue-700"
-              >
-                <GraduationCap className="mr-2 h-4 w-4" />
-                I'm a Teacher
-              </Button>
-                             <Button 
-                 variant="outline"
-                 onClick={() => window.location.href = '/auth/donor-signup'}
-               >
-                 <Heart className="mr-2 h-4 w-4" />
-                 I Want to Help
-               </Button>
+              {/* Desktop - Buttons */}
+              <div className="hidden md:flex items-center space-x-4">
+                <Button 
+                  onClick={() => window.location.href = '/auth/login'}
+                  className="bg-primary text-white hover:bg-blue-700"
+                >
+                  <GraduationCap className="mr-2 h-4 w-4" />
+                  I'm a Teacher
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => window.location.href = '/auth/donor-login'}
+                >
+                  <Heart className="mr-2 h-4 w-4" />
+                  I Want to Help
+                </Button>
+              </div>
+              
+              {/* Mobile - Hamburger Menu */}
+              <div className="md:hidden">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Menu className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem asChild>
+                      <Link href="/auth/login" className="flex items-center">
+                        <GraduationCap className="mr-2 h-4 w-4" />
+                        I'm a Teacher
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/auth/donor-login" className="flex items-center">
+                        <Heart className="mr-2 h-4 w-4" />
+                        I Want to Help
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </div>
         </div>
@@ -164,30 +198,30 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">For Teachers</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">1</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">1</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Create Your Account</h4>
-                    <p className="text-gray-600">Sign up and verify your teacher status</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">2</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Build Your Wishlist</h4>
-                    <p className="text-gray-600">Add items your classroom needs with descriptions and quantities</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Create Your Account</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Sign up and verify your teacher status</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">3</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">2</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Share & Receive</h4>
-                    <p className="text-gray-600">Share your wishlist and coordinate with donors</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Build Your Wishlist</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Add items your classroom needs with descriptions and quantities</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">3</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Share & Receive</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Share your wishlist and coordinate with donors</p>
                   </div>
                 </div>
               </div>
@@ -197,30 +231,30 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">For Donors</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">1</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">1</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Browse Wishlists</h4>
-                    <p className="text-gray-600">Find teachers and classrooms that need support</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">2</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Pledge Items</h4>
-                    <p className="text-gray-600">Commit to donating specific items - no payment required</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Browse Wishlists</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Find teachers and classrooms that need support</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-3 mt-1">
-                    <span className="text-sm font-semibold">3</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">2</span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Coordinate Delivery</h4>
-                    <p className="text-gray-600">Contact the teacher to arrange donation drop-off</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Pledge Items</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Commit to donating specific items - no payment required</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-600 text-white rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5 sm:mt-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-semibold">3</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">Complete Transfer</h4>
+                    <p className="text-gray-600 text-xs sm:text-sm">Transfer funds to teacher's bank account or purchase from their Amazon wishlist</p>
                   </div>
                 </div>
               </div>

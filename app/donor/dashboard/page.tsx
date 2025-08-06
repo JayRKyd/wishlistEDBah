@@ -138,71 +138,71 @@ export default function DonorDashboard() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {userRole?.profile?.first_name}! 👋
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {userRole?.profile?.first_name}! 
           </h1>
-          <p className="text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600">
             Thank you for supporting Bahamian teachers and students. Here's your impact summary.
           </p>
         </div>
 
         {/* Stats Cards */}
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Total Pledged</p>
-                    <p className="text-2xl font-bold text-primary">${stats.totalPledged.toFixed(2)}</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Pledged</p>
+                    <p className="text-lg sm:text-2xl font-bold text-primary">${stats.totalPledged.toFixed(2)}</p>
                   </div>
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <DollarSign className="h-6 w-6 text-primary" />
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <DollarSign className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Total Donated</p>
-                    <p className="text-2xl font-bold text-green-600">${stats.totalDonated.toFixed(2)}</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Donated</p>
+                    <p className="text-lg sm:text-2xl font-bold text-green-600">${stats.totalDonated.toFixed(2)}</p>
                   </div>
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="h-6 w-6 text-green-600" />
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Active Pledges</p>
-                    <p className="text-2xl font-bold text-orange-600">{stats.activePledges}</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Active Pledges</p>
+                    <p className="text-lg sm:text-2xl font-bold text-orange-600">{stats.activePledges}</p>
                   </div>
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                    <Clock className="h-6 w-6 text-orange-600" />
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                    <Clock className="h-4 w-4 sm:h-6 sm:w-6 text-orange-600" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Teachers Helped</p>
-                    <p className="text-2xl font-bold text-purple-600">{stats.teachersHelped}</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Teachers Helped</p>
+                    <p className="text-lg sm:text-2xl font-bold text-purple-600">{stats.teachersHelped}</p>
                   </div>
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Users className="h-6 w-6 text-purple-600" />
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Users className="h-4 w-4 sm:h-6 sm:w-6 text-purple-600" />
                   </div>
                 </div>
               </CardContent>
@@ -212,79 +212,82 @@ export default function DonorDashboard() {
 
         {/* Active Pledges */}
         {activePledges.length > 0 && (
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Gift className="mr-2 h-5 w-5 text-primary" />
+          <Card className="mb-6 sm:mb-8">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center text-base sm:text-lg">
+                <Gift className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 Active Pledges
               </CardTitle>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-gray-600 break-words">
                 Pledges awaiting your payment or confirmation
               </p>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="p-4 sm:p-6">
+              <div className="space-y-3 sm:space-y-4">
                 {activePledges.map((pledge) => {
                   const item = pledge.wishlist_items;
                   const teacher = item.wishlists.teachers;
                   const user = Array.isArray(teacher.users) ? teacher.users[0] : teacher.users;
                   
                   return (
-                    <div key={pledge.id} className="border border-gray-200 rounded-lg p-4 bg-white">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2">
-                            <h3 className="font-semibold text-gray-900">{item.name}</h3>
+                    <div key={pledge.id} className="border border-gray-200 rounded-lg p-3 sm:p-4 bg-white">
+                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <h3 className="font-semibold text-gray-900 text-sm sm:text-base break-words">{item.name}</h3>
                             <Badge 
                               variant={pledge.status === 'pending' ? 'outline' : 'default'}
                               className={
                                 pledge.status === 'pending' 
-                                  ? 'border-orange-200 text-orange-700 bg-orange-50'
-                                  : 'border-green-200 text-green-700 bg-green-50'
+                                  ? 'border-orange-200 text-orange-700 bg-orange-50 text-xs'
+                                  : 'border-green-200 text-green-700 bg-green-50 text-xs'
                               }
                             >
                               {pledge.status === 'pending' ? 'Pending Payment' : 'Confirmed'}
                             </Badge>
                           </div>
                           
-                          <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
+                          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-gray-600 mb-2">
                             <div className="flex items-center">
-                              <GraduationCap className="h-4 w-4 mr-1" />
-                              <span>{user?.first_name} {user?.last_name}</span>
+                              <GraduationCap className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                              <span className="break-words">{user?.first_name} {user?.last_name}</span>
                             </div>
                             <div className="flex items-center">
-                              <School className="h-4 w-4 mr-1" />
-                              <span>{teacher.school}</span>
+                              <School className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                              <span className="break-words">{teacher.school}</span>
                             </div>
                           </div>
                           
-                          <div className="flex items-center space-x-4 text-sm">
+                          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
                             <span className="text-gray-600">Amount: <strong>${pledge.amount}</strong></span>
                             <span className="text-gray-600">Quantity: <strong>{pledge.quantity}</strong></span>
-                            <span className="text-gray-600">Ref: <strong>{pledge.transaction_reference}</strong></span>
+                            <span className="text-gray-600 break-all">Ref: <strong>{pledge.transaction_reference}</strong></span>
                           </div>
                         </div>
                         
-                        <div className="flex space-x-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <Button 
                             variant="outline" 
                             size="sm"
+                            className="text-xs sm:text-sm"
                             onClick={() => router.push(`/wishlist/${item.wishlists.share_token}`)}
                           >
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Wishlist
+                            <Eye className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className="hidden sm:inline">View Wishlist</span>
+                            <span className="sm:hidden">View</span>
                           </Button>
                           {pledge.status === 'pending' && (
                             <Button 
-                              className="bg-primary hover:bg-blue-700"
+                              className="bg-primary hover:bg-blue-700 text-xs sm:text-sm"
                               size="sm"
                               onClick={() => {
                                 setSelectedPledge(pledge);
                                 setShowBankingModal(true);
                               }}
                             >
-                              <CreditCard className="mr-2 h-4 w-4" />
-                              Complete Payment
+                              <CreditCard className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                              <span className="hidden sm:inline">Complete Payment</span>
+                              <span className="sm:hidden">Pay</span>
                             </Button>
                           )}
                         </div>

@@ -11,7 +11,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import type { InsertUser, InsertDonor } from "@/lib/supabase/schema";
 
 export default function DonorSignUpPage() {
   const router = useRouter();
@@ -59,7 +58,8 @@ export default function DonorSignUpPage() {
     setIsLoading(true);
 
     try {
-      // Create auth user
+      // Create auth user - the trigger will automatically create the user record with role='donor'
+      // and another trigger will automatically create the donor profile
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -68,6 +68,10 @@ export default function DonorSignUpPage() {
             first_name: formData.firstName,
             last_name: formData.lastName,
             role: 'donor',
+            // Store additional donor info in metadata for later use
+            phone: formData.phone || null,
+            location: formData.location || null,
+            motivation: formData.motivation || null,
           }
         }
       });
@@ -75,32 +79,6 @@ export default function DonorSignUpPage() {
       if (authError) throw authError;
 
       if (authData.user) {
-        // User profile is automatically created by trigger
-        // Just verify it was created with the correct role
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .select('role')
-          .eq('id', authData.user.id)
-          .single();
-
-        if (userError || userData?.role !== 'donor') {
-          throw new Error('Failed to create donor profile. Please try again.');
-        }
-
-        // Create donor profile
-        const donorData: InsertDonor = {
-          user_id: authData.user.id,
-          phone: formData.phone || null,
-          location: formData.location || null,
-          motivation: formData.motivation || null,
-        };
-
-        const { error: donorError } = await supabase
-          .from('donors')
-          .insert([donorData]);
-
-        if (donorError) throw donorError;
-
         toast({
           title: "Account Created!",
           description: "Welcome to the community! Check your email to verify your account.",
@@ -117,7 +95,6 @@ export default function DonorSignUpPage() {
         }
       }
     } catch (error: any) {
-      console.error('Signup error:', error);
       toast({
         title: "Signup Failed",
         description: error.message || "Failed to create account. Please try again.",
@@ -132,15 +109,7 @@ export default function DonorSignUpPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back Link */}
-        <div className="mb-6">
-          <Link 
-            href="/browse" 
-            className="inline-flex items-center text-gray-600 hover:text-primary transition-colors"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Browse
-          </Link>
-        </div>
+
 
         <Card className="shadow-lg">
           <CardHeader className="text-center">
@@ -174,7 +143,10 @@ export default function DonorSignUpPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Last Name *</Label>
+                  <Label htmlFor="lastName" className="flex items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    Last Name *
+                  </Label>
                   <Input
                     id="lastName"
                     type="text"

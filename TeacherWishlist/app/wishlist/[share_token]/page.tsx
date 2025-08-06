@@ -407,7 +407,7 @@ Best regards,
                             </div>
                             {item.estimated_cost && (
                               <div className="flex items-center">
-                                <span>💰 Est. Cost: <strong>{item.estimated_cost}</strong></span>
+                                <span>Est. Cost: <strong>${item.estimated_cost}</strong></span>
                               </div>
                             )}
                           </div>

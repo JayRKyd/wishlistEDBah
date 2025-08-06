@@ -45,7 +45,7 @@ export default function HowToHelpPage() {
                   <div className="space-y-4 text-gray-700">
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex items-start">
-                        <CheckCircle className="text-blue-600 mr-2 mt-1 flex-shrink-0" />
+                          <span className="text-primary text-3xl mr-4 mt-1"></span>
                         <div>
                           <h3 className="font-semibold text-blue-900 mb-2">No Account Required</h3>
                           <p className="text-blue-800">
@@ -81,22 +81,22 @@ export default function HowToHelpPage() {
                   <div className="space-y-4 text-gray-700">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <div className="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
-                          <span className="text-lg font-bold">1</span>
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                          <span className="text-sm sm:text-lg font-bold">1</span>
                         </div>
                         <h3 className="font-semibold text-gray-900 mb-2">Browse & Choose</h3>
                         <p className="text-sm text-gray-600">Find wishlists and select items you want to help with</p>
                       </div>
                       <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
-                          <span className="text-lg font-bold">2</span>
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                          <span className="text-sm sm:text-lg font-bold">2</span>
                         </div>
                                                  <h3 className="font-semibold text-gray-900 mb-2">Fund the Classroom</h3>
                          <p className="text-sm text-gray-600">Purchase from Amazon wishlist or make bank transfer</p>
                       </div>
                       <div className="text-center p-4 bg-purple-50 rounded-lg">
-                        <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
-                          <span className="text-lg font-bold">3</span>
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                          <span className="text-sm sm:text-lg font-bold">3</span>
                         </div>
                                                  <h3 className="font-semibold text-gray-900 mb-2">Track Your Impact</h3>
                          <p className="text-sm text-gray-600">See how your funding helps teachers and students</p>

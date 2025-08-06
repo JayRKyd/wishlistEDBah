@@ -204,7 +204,7 @@ export default function PledgeModal({
                     </span>
                     {item?.estimated_cost && (
                       <span className="text-gray-600">
-                        Est. Cost: <strong>{item.estimated_cost}</strong>
+                        Est. Cost: <strong>${item.estimated_cost}</strong>
                       </span>
                     )}
                     <Badge 

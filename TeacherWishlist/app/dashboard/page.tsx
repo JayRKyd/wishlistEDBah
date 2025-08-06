@@ -166,6 +166,32 @@ export default function TeacherDashboard() {
     },
   });
 
+  // Delete wishlist mutation
+  const deleteWishlistMutation = useMutation({
+    mutationFn: async (wishlistId: number) => {
+      const { error } = await supabase
+        .from('wishlists')
+        .delete()
+        .eq('id', wishlistId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Wishlist Deleted",
+        description: "The wishlist has been successfully deleted.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['teacher-wishlists'] });
+      queryClient.invalidateQueries({ queryKey: ['teacher-stats'] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to delete wishlist",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Auth check
   useEffect(() => {
     if (!userLoading && !user) {
@@ -190,6 +216,12 @@ export default function TeacherDashboard() {
   const handleDeleteItem = (itemId: number) => {
     if (confirm("Are you sure you want to delete this item?\n\nThis action cannot be undone.")) {
       deleteItemMutation.mutate(itemId);
+    }
+  };
+
+  const handleDeleteWishlist = (wishlistId: number, wishlistTitle: string) => {
+    if (confirm(`Are you sure you want to delete "${wishlistTitle}"?\n\nThis will permanently delete the wishlist and all its items. This action cannot be undone.`)) {
+      deleteWishlistMutation.mutate(wishlistId);
     }
   };
 
@@ -251,7 +283,6 @@ export default function TeacherDashboard() {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                    {teacher && <NotificationBell teacherId={teacher.id} />}
                     <Button variant="outline" onClick={() => setShowProfileForm(true)} size="sm" className="sm:size-default">
                       <Edit className="mr-2 h-4 w-4" />
                       <span className="hidden sm:inline">Edit Profile</span>
@@ -329,8 +360,59 @@ export default function TeacherDashboard() {
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                     <CardTitle className="text-lg sm:text-xl">{wishlist.title || "My Classroom Wishlist"}</CardTitle>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-
-                      <span className="text-xs sm:text-sm text-gray-500 break-all">Share Code: {wishlist.share_token}</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={async () => {
+                          const shareUrl = `${window.location.origin}/wishlist/${wishlist.share_token}`;
+                          if (navigator.share) {
+                            try {
+                              await navigator.share({
+                                title: `${userProfile?.first_name}'s Classroom Wishlist`,
+                                text: `Help support ${userProfile?.first_name} ${userProfile?.last_name}'s classroom!`,
+                                url: shareUrl,
+                              });
+                            } catch (error) {
+                              // Fallback to clipboard
+                              navigator.clipboard.writeText(shareUrl);
+                              toast({
+                                title: "Link copied!",
+                                description: "Your wishlist link has been copied to clipboard.",
+                              });
+                            }
+                          } else {
+                            // Fallback to clipboard
+                            navigator.clipboard.writeText(shareUrl);
+                            toast({
+                              title: "Link copied!",
+                              description: "Your wishlist link has been copied to clipboard.",
+                            });
+                          }
+                        }}
+                        className="flex items-center gap-2"
+                      >
+                        <Share className="h-4 w-4" />
+                        Share Wishlist
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDeleteWishlist(wishlist.id, wishlist.title || "My Classroom Wishlist")}
+                        disabled={deleteWishlistMutation.isPending}
+                        className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 hover:border-red-300"
+                      >
+                        {deleteWishlistMutation.isPending ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600" />
+                            Deleting...
+                          </>
+                        ) : (
+                          <>
+                            <Trash2 className="h-4 w-4" />
+                            Delete Wishlist
+                          </>
+                        )}
+                      </Button>
                     </div>
                   </div>
                 </CardHeader>
@@ -515,7 +597,7 @@ function WishlistItems({
                 <span>Need: <strong>{item.quantity}</strong></span>
                 <span>Pledged: <strong>{item.pledges?.reduce((sum: number, pledge: any) => sum + pledge.quantity, 0) || 0}</strong></span>
                 <span>Remaining: <strong>{Math.max(0, item.quantity - (item.pledges?.reduce((sum: number, pledge: any) => sum + pledge.quantity, 0) || 0))}</strong></span>
-                {item.estimated_cost && <span>Est. Cost: <strong>{item.estimated_cost}</strong></span>}
+                {item.estimated_cost && <span>Est. Cost: <strong>${item.estimated_cost}</strong></span>}
               </div>
             </div>
             
